@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#16181C" />
+    <title>ShowUp privacy policy</title>
+    <meta
+      name="description"
+      content="What ShowUp stores on your phone, what an optional account adds, who can see it, which third parties receive what, and how to export or delete everything." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="./">Show<b>Up</b></a>
+        <nav class="site-nav" aria-label="Site">
+          <a href="privacy.html" aria-current="page">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="delete-account.html">Delete account</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <h1>Privacy policy</h1>
+      <p class="meta">Last updated: 9 October 2026</p>
+      <p class="lede">
+        This page says what ShowUp stores, where, who can see it, and how to remove it. It is
+        written from the app's actual data flows, not from a template. If something here does not
+        match what the app does, tell us and we will fix one or the other.
+      </p>
+
+      <div class="card">
+        <h2>In short</h2>
+        <ul>
+          <li>
+            Your workouts, food log, bodyweight and everything Ares works out from them are stored
+            on your phone only.
+          </li>
+          <li>
+            You sign in once, with email or Google, and everything then works offline. The account
+            is how you keep your username and add friends. Friends see counts and percentages you
+            chose to share, never your logs.
+          </li>
+          <li>
+            No advertising, no analytics SDKs, no selling of data. Progress photos you take stay on
+            your phone and are never analyzed; the app copies them to your own Google Drive only if
+            you turn that on, and never sends them to us. A meal photo you choose to send is
+            analyzed once and never stored. The app is for people 16 and older.
+          </li>
+          <li>
+            The app counts which of its screens and features are used and for how long, to learn
+            what helps. The counts carry a random number made on your phone, never your account, and
+            never anything you log or type. While the app is in testing there is no switch to turn
+            this off; Delete all data gives your phone a new random number (section 6, Usage
+            statistics).
+          </li>
+          <li>
+            Google Drive backup, once you connect it, copies the parts you switch on from your phone
+            straight to a folder in your own Google Drive, by itself (your data unless you switch it
+            off, progress photos only if you switch that on); it never passes through our server.
+            "Save backup file" makes one file of everything and hands it to your phone's share
+            sheet, so it goes only where you pick.
+          </li>
+          <li>
+            When you chat with Ares, what is on the screen you asked from (for example your logged
+            sets and loads, your targets, the day's food entries, or during a workout the injury
+            areas you marked) and, from any screen, a summary of your own data (your plan, the last
+            4 weeks of training, your weekly report, nutrition targets and averages, weight trend
+            and goal, injuries and today; the full list is in <a href="#third-parties">section 6</a>
+            (g)) go to the language model through our server for that answer only. They are never
+            stored, and never sent with your name, email or account id.
+          </li>
+          <li>
+            When you ask Ares to change something (log a set or a food, change a setting), the
+            change happens on your phone with the app's own numbers, and what it did goes back to
+            the language model for the rest of that answer. A setting kept with your account (your
+            notifications and What friends see) is also saved there, just as when you change it on
+            its screen. Notes you ask Ares to remember stay on your phone; they go with each chat
+            question and with the requests that word Ares's findings, the weekly report, a plan's
+            pros and cons and a Plan review (minus notes on topics you switched off), and shape only
+            the wording.
+          </li>
+          <li>
+            Your location stays on your phone. A gym's saved location is used only by the phone to
+            notice you arrive on a day you train with a friend, and only if you switch that on; your
+            friend is told "arrived", never where. What you type into a gym's address goes through
+            our server to an OpenStreetMap search (Photon, run by komoot) for suggestions, held only
+            briefly in our server's memory (<a href="#third-parties">section 6</a>).
+          </li>
+          <li>
+            If you connect Health Connect on Android, ShowUp reads your steps, distance, other apps'
+            workouts and weigh-ins onto your phone and saves your ShowUp workouts to Health Connect.
+            Only weekly activity summaries reach Ares's language model, through our server, and
+            weigh-ins from Health Connect join the weight trend Ares already sends. Health data is
+            never sold or used for ads (<a href="#health-connect">details</a>).
+          </li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="Sections">
+        <ol>
+          <li><a href="#who">Who is responsible</a></li>
+          <li><a href="#device">What stays on your phone</a></li>
+          <li><a href="#account">What an account adds</a></li>
+          <li><a href="#never">What is never stored on our server</a></li>
+          <li><a href="#visibility">Who can see what</a></li>
+          <li><a href="#third-parties">Third parties and what each receives</a></li>
+          <li><a href="#retention">How long data is kept</a></li>
+          <li><a href="#age">Age</a></li>
+          <li><a href="#rights">Your controls and rights</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#changes">Changes to this policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="who">1. Who is responsible</h2>
+      <p>
+        ShowUp is published by
+        <span class="placeholder"
+          >[FOUNDERS: legal name of the person or company that publishes the app, and a postal
+          address]</span
+        >. For anything about your data, write to
+        <a href="mailto:showupfitnessapp@gmail.com">showupfitnessapp@gmail.com</a>.
+      </p>
+
+      <h2 id="device">2. What stays on your phone</h2>
+      <p>
+        The app keeps its data in a database inside its own private storage on your phone. Nothing
+        in this list is sent to us or to anyone else:
+      </p>
+      <ul>
+        <li>
+          Workouts: exercises, sets, weights, reps, RIR, set types, notes, duration, templates.
+        </li>
+        <li>Your food log: entries, calories, macros, custom foods, recipes, daily totals.</li>
+        <li>Your bodyweight log.</li>
+        <li>
+          Profile inputs: training level, sex at birth (which only selects the body model), birth
+          year and month, height, goal, calorie and macro targets, equipment, units.
+        </li>
+        <li>
+          Everything the app computes from those: muscle coverage, your weekly targets, the weekly
+          report, personal records, Ares's findings, trajectory and check-in, streaks, and each
+          two-weekly Plan review with the changes it suggested, what you applied or undid, and the
+          day it was due.
+        </li>
+        <li>
+          Rest-timer, reminder and nudge settings. Those notifications are scheduled on the phone.
+        </li>
+        <li>
+          What Ares remembers: the short notes you asked Ares to remember in the chat (at most 40,
+          in your words), listed under Settings, Ares, What Ares remembers, where you can forget
+          each one. They are left out of the JSON and Google Drive backups, and Delete all data
+          clears them. They are the one item here that leaves the phone: each chat question and the
+          narration requests in <a href="#third-parties">section 6</a> ((a), (f), (g) and (j)) carry
+          them through our server to the language model for that answer only, and they are never
+          stored there.
+        </li>
+        <li>
+          Progress photos (front, side and back) you take after a workout, after a weigh-in or from
+          the Photos pane. They are JPEG files in the app's private folder, not in your gallery. The
+          app never sends them to our server or to any model, and never looks at what is in them;
+          the one upload is to your own Google Drive, and only if you switch on "Progress photos" in
+          the Google Drive backup's "What to back up" (below). They are left out of the JSON backup;
+          "Export photos" under Data and backup makes a separate zip that you hand to your phone's
+          share sheet yourself, and "Import photos" reads that zip back. The zip is written to the
+          app's cache, one at a time: the next export, deleting a photo, and Delete all data remove
+          it.
+        </li>
+        <li>
+          Your gyms: a name, an optional address, and, only if you tap "Use my current location",
+          the gym's coordinates. The coordinates are used for one thing: with "Tell my buddy when I
+          arrive" switched on (it is off until you turn it on, in Settings &gt; Social &gt; Gyms),
+          on a day you are in a gym session with a friend, the phone asks its own location service
+          to notice when you enter a circle about 150 m around that gym. That check runs on the
+          phone; the app never reads your position in the background and never sends it. The watch
+          stops when you arrive, tap "I'm here", turn the switch off or delete your data. Once the
+          session or the day is over it stops the next time you open the app or pass the gym; until
+          then the circle stays registered with your phone's location service, but nothing is read
+          or sent. Your gyms are in the JSON backup with their coordinates, because that file is
+          yours; the app never uploads it. Typing in a gym's address field (from 3 characters, after
+          a short pause) sends the words to our server's address search, which asks Photon, an
+          OpenStreetMap search run by komoot, and shows up to 5 places (section 6); picking one
+          saves its address and point on the phone, the same as "Use my current location".
+        </li>
+      </ul>
+      <p>
+        You can export all of it as CSV or JSON from the app (photos through their own zip) and
+        delete all of it in Settings under Data and backup; Delete all data removes the photo files
+        and any photo or backup zip too. Uninstalling the app deletes it too.
+      </p>
+      <p>
+        <strong>Google Drive backup.</strong> Off until you connect it under Settings, Data and
+        backup (Android). "Back up to Google Drive" first opens "What to back up", with one switch
+        for each part the backup can copy: "Workouts, food and settings" (the JSON backup), on until
+        you turn it off, and "Progress photos", off until you turn it on. The switches keep your
+        choice, and the automatic backup copies the same parts. Connecting shows Google's own
+        consent screen and asks for one permission: to see, create and change only the files ShowUp
+        itself creates in your Drive (Google calls it the drive.file scope); the app cannot see
+        anything else in your Drive. From then on the phone backs up by itself when you open the app
+        (at most about twice a day), after you finish a workout and after you save progress photos,
+        and when you tap "Back up" in "What to back up": it copies the parts switched on into a
+        folder named "ShowUp backup" in your Google Drive. With "Workouts, food and settings" on,
+        that is the JSON backup (everything in the list above, your gyms included) as
+        <code>backup.json</code>, keeping the one before it as <code>backup-previous.json</code>.
+        With "Progress photos" on, each photo is copied once, under its file name, into a "photos"
+        folder there, with <code>photos.json</code> (each photo's date, kind, angle, caption, size
+        and your bodyweight at the time). A photo you delete on the phone is deleted from that
+        folder at the next backup; nothing else there is ever deleted by the app, and turning a
+        switch off stops new copies of that part and leaves what is already there. The upload goes
+        from your phone straight to Google: it never passes through our server, we keep no copy, and
+        we never see your Google account or its password. The phone asks Google Play services for a
+        short-lived access token each time and keeps no Google password or long-lived token. The
+        files count against your Google storage, and Google's privacy policy covers them.
+        "Disconnect Google Drive" removes the app's access to your Drive when the phone is online;
+        if it is not, the app says so, and you can remove the access in your Google Account. The
+        folder stays in your Drive until you delete it, and so it does after Delete all data.
+        "Restore from Drive" reads the backup back through the same Restore screen, then the photos
+        this phone does not have. ShowUp's use of information received from Google APIs adheres to
+        the
+        <a href="https://developers.google.com/terms/api-services-user-data-policy"
+          >Google API Services User Data Policy</a
+        >, including the Limited Use requirements: the Drive access is used only to write and read
+        your own backup for you, on your phone, never for advertising, and no person at ShowUp reads
+        it.
+      </p>
+      <p>
+        <strong>Save backup file.</strong> Under Settings, Data and backup, "Save backup file"
+        writes one zip, <code>showup-backup-&lt;date&gt;.zip</code>, holding the JSON backup and
+        your progress photos, to the app's cache and opens your phone's share sheet. You choose
+        where it goes: Google Drive, Dropbox, OneDrive, Files, or any other app on your phone, or
+        nowhere. The app never uploads it, has no account with any of those services, and never
+        learns where you sent it; the receiving app's own terms cover the copy it keeps. Only one
+        such zip sits in the cache at a time; the next backup or photo export, deleting a photo, and
+        Delete all data remove it. "Restore a backup" reads the zip back: the rows first, then the
+        photos, skipping photos already on the phone. An optional weekly reminder ("Remind me to
+        back up", off until you turn it on) is a notification scheduled on the phone; while the
+        Google Drive backup is on, copies your data and has run in the last week, it stays quiet.
+      </p>
+      <p>
+        <strong>Your phone's own backup.</strong> Your phone's automatic backup (Google backup on
+        Android, iCloud Backup on iPhone) may include the app's database according to your device
+        settings; that is between you and your phone's vendor, and the app never sends it anywhere
+        itself. On Android the app tells that backup, and a transfer to a new phone, to leave the
+        progress-photo folder out, so the photos never leave the phone that way and cannot push the
+        app past Android's size limit for one app's backup. iPhone's iCloud Backup may include the
+        progress photos; the app cannot exclude them there yet.
+      </p>
+
+      <h3 id="health-connect">Health Connect (Android)</h3>
+      <p>
+        Health Connect is Android's on-device store for health and fitness data, shared by the apps
+        you allow (watches, scales, running and cycling apps). ShowUp uses it only after you tap
+        Connect in Settings, Data and backup, Health Connect, and only for the kinds of data you
+        allow in Health Connect's own permission screen. Apple Health on iPhone is not connected in
+        this version.
+      </p>
+      <ul>
+        <li>
+          <strong>What ShowUp reads:</strong> your steps and distance per day; the exercise sessions
+          other apps saved (the type of activity, start and end time, the title the other app gave
+          it, and which app saved it); and your weigh-ins. It reads the last 35 days and keeps
+          reading while you stay connected; Health Connect lets a new app see at most 30 days before
+          you first allowed it.
+        </li>
+        <li>
+          <strong>What ShowUp writes:</strong> each workout you finish in ShowUp, as one exercise
+          session with its type (strength training), start and end time and name, so other apps can
+          see you trained. Editing or deleting the workout in ShowUp updates or deletes that
+          session. Sets, weights and reps are not written.
+        </li>
+        <li>
+          <strong>Where it is kept:</strong> on your phone, in the app's database. Weigh-ins join
+          your weight log (Nutrition, Weight) and feed Ares like any weigh-in, including the weight
+          trend that reaches Anthropic (next point). Steps and other apps' sessions are a copy used
+          for Ares's activity facts and a short list on the Health Connect screen; they are never
+          shown as ShowUp workouts and never count toward muscle coverage. Because Health Connect
+          already keeps them, what ShowUp read from it is left out of Export, of the JSON backup (so
+          of the Google Drive backup too) and of the "Save backup file" zip, and Delete all data
+          removes it. A weigh-in from Health Connect that you delete in ShowUp stays deleted.
+        </li>
+        <li>
+          <strong>What leaves your phone:</strong> when Ares writes its read or you ask Ares in the
+          chat, weekly summaries of the last 7 full days go through our server to Anthropic (section
+          6) for that answer only: your average steps a day, the average over the 4 weeks before and
+          the change between them, the total distance, the number of sessions and minutes other apps
+          logged by type of activity, their average minutes a week over the 4 weeks before, and the
+          active minutes of those sessions and your ShowUp workouts together. Never a single day's
+          steps, single records, the titles or apps of other sessions, locations or heart rate
+          (ShowUp does not read them), and nothing is stored on our server. You can turn this off
+          with Activity in Settings, Ares, Not interested. Weigh-ins read from Health Connect are
+          part of your weight log, so the latest one can be the current weight, and part of the
+          weekly rate, in the Ares findings sent when Ares writes its read (section 6 (a)) and in
+          the weight part of the summary each Ares chat question carries (section 6 (g)); muting
+          Activity does not stop that, turning Read weight off stops new ones.
+        </li>
+        <li>
+          <strong>What we never do with it:</strong> sell it, give it to advertisers or data
+          brokers, use it for advertising, or use it for credit, insurance or employment decisions.
+        </li>
+        <li>
+          <strong>Your controls:</strong> switch Read activity, Read weight and Save workouts on or
+          off one by one; turning Read activity off deletes the copied steps and sessions.
+          Disconnect stops all reading and writing, deletes the copied activity and asks Health
+          Connect to remove ShowUp's access (Health Connect finishes it when ShowUp restarts).
+          Weigh-ins already in your log stay until you delete them. Workouts ShowUp saved stay in
+          Health Connect until you delete them there: Health Connect, App permissions, ShowUp,
+          Delete data. Health Connect's permission screen links to this policy.
+        </li>
+      </ul>
+
+      <h2 id="account">3. What an account adds</h2>
+      <p>
+        You sign in to use the app, with an email address and password or with Google. The following
+        is stored on our server so you can sign in and so friends you add can see what you chose to
+        share. Every number here is computed on your phone and sent as a finished value; the server
+        never sees the logs behind it.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Why</th>
+              <th>Who can see it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Email address and password</td>
+              <td>Signing in. The password is stored hashed; we never see it.</td>
+              <td>Only you and us.</td>
+            </tr>
+            <tr>
+              <td>Username and an optional display name</td>
+              <td>How friends find you: exact username only, no browsing, no name search.</td>
+              <td>Friends, and people in a challenge, event or chat with you.</td>
+            </tr>
+            <tr>
+              <td>Birth month and year</td>
+              <td>Checked on your phone to apply the 16+ rule.</td>
+              <td>Not sent to us.</td>
+            </tr>
+            <tr>
+              <td>Your privacy switches; your training level if you turn that switch on</td>
+              <td>They decide what a friend's view of you contains.</td>
+              <td>Level: friends, if on. Switches: only you.</td>
+            </tr>
+            <tr>
+              <td>
+                Weekly card: sessions this week, coverage percent, week streak; optionally adherence
+                percent and a covered / partial / low status per muscle group
+              </td>
+              <td>
+                The friend list and your profile card. Provisional (estimated) sets are excluded.
+              </td>
+              <td>Friends, each field per its switch.</td>
+            </tr>
+            <tr>
+              <td>Daily target check: one yes or no per day for "hit my calorie target"</td>
+              <td>Shown as a check on days it is true. Never a number, never a streak.</td>
+              <td>Friends, if the switch is on. Kept 7 days.</td>
+            </tr>
+            <tr>
+              <td>
+                Shared workout summaries: name, date, duration, number of exercises and sets, groups
+                covered; optionally total volume and records
+              </td>
+              <td>Only when you tap "Share with friends" on the finish screen.</td>
+              <td>Friends.</td>
+            </tr>
+            <tr>
+              <td>Kudos, reactions and comments you post</td>
+              <td>Responses on shared workouts and challenges.</td>
+              <td>Whoever can see that workout or challenge.</td>
+            </tr>
+            <tr>
+              <td>Challenges: title, metric, dates, your current value</td>
+              <td>The value is a count of sessions or days, a coverage percent, or weeks.</td>
+              <td>The other participant.</td>
+            </tr>
+            <tr>
+              <td>
+                Accountability buddies: four weeks of your weekly card and seven days of checks
+              </td>
+              <td>Both people accept before anything is shown.</td>
+              <td>Your buddy.</td>
+            </tr>
+            <tr>
+              <td>Events: title, venue text you typed, times, your RSVP and attendance mark</td>
+              <td>Planning a session with friends.</td>
+              <td>The people invited.</td>
+            </tr>
+            <tr>
+              <td>Messages</td>
+              <td>
+                Direct messages between friends. Checked for abuse before delivery (section 6).
+              </td>
+              <td>The friend you sent them to. Deleted after 30 days.</td>
+            </tr>
+            <tr>
+              <td>
+                Gym sessions: who trained with whom and when, each person's state (invited, joined,
+                left, declined), their "Share weights with partner" switch, the name of the gym the
+                inviter picked, and when each person said they arrived
+              </td>
+              <td>
+                Training with a friend live. The session row is only the pairing; the sets travel
+                live and are never stored (section 5). The gym is a name you typed, never an address
+                or a location; "arrived" is a time, sent when your phone noticed the gym or you
+                tapped "I'm here".
+              </td>
+              <td>The people in that session. Deleted 30 days after the session ends.</td>
+            </tr>
+            <tr>
+              <td>Friend requests, friendships, buddy pairs, blocks and reports you file</td>
+              <td>Running the friend model and keeping people safe.</td>
+              <td>
+                Requests and friendships: the two people. Blocks and reports: only you and us.
+              </td>
+            </tr>
+            <tr>
+              <td>A push notification token for your device</td>
+              <td>
+                Only if you turn on push notifications, so the server can notify you about friend
+                requests and challenge invites.
+              </td>
+              <td>Only us and the push services in section 6.</td>
+            </tr>
+            <tr>
+              <td>Housekeeping: rate-limit counters (2 days), previous usernames (30 days)</td>
+              <td>Stops abuse and impersonation after a username change.</td>
+              <td>Only us.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="never">4. What is never stored on our server</h2>
+      <p>
+        These have no place on our server. There is no column for them, so no switch can turn them
+        on and no bug in a setting can leak them. When you chat with Ares, the ones on your screen
+        and in the summary of your own data (section 6 (g)) pass through our server to the language
+        model for that one answer, and are not kept; your height, sex at birth and birth date never
+        do:
+      </p>
+      <ul>
+        <li>Calories, macros, food entries and daily totals.</li>
+        <li>Bodyweight, height, sex at birth, birth date.</li>
+        <li>
+          RIR, notes, and the weight or reps of any set. During a gym session they are relayed live
+          to your partner and never written anywhere (section 5).
+        </li>
+        <li>Weekly effective sets per muscle (friends see a status word, never the count).</li>
+        <li>
+          Ares's findings, the check-in, the weekly report text, your Ares chats, and the notes Ares
+          remembers.
+        </li>
+        <li>
+          Body or progress photos. Progress photos are kept on your phone, and in your own Google
+          Drive only if you turn that on (section 2); no function, model or table on our side
+          receives them. A meal photo you choose to send for food identification is analyzed once
+          and never stored (section 6).
+        </li>
+        <li>
+          Your location, and your gyms' coordinates or addresses (section 2). Only a gym's name and
+          the fact that you arrived are kept on our server. What you type into a gym's address
+          passes through it to the address search and is held only in its memory, for at most 10
+          minutes, never in a table, a file or a log (section 6).
+        </li>
+        <li>
+          Anything read from Health Connect: steps, distance, other apps' sessions and weigh-ins
+          (section 2). Weekly summaries of your activity pass through to the language model when
+          Ares writes its read or you chat, and are not kept.
+        </li>
+      </ul>
+
+      <h2 id="visibility">5. Who can see what</h2>
+      <ul>
+        <li>
+          Nobody sees anything about you until you add a friend and they accept. Friends are found
+          by exact username, a link you share, or a QR code on your screen.
+        </li>
+        <li>
+          Friends see your weekly card (per your switches), today's check if on, the workouts you
+          chose to share, and what you post on theirs. Buddies see four weeks instead of one.
+        </li>
+        <li>
+          People in a challenge, event or chat with you see your username, display name and the
+          values that feature needs.
+        </li>
+        <li>
+          In a gym session, the other person sees the gym's name and, once you arrive, "Sam is at
+          the gym" (a push, if they allow it, and a line in the app). They never see where you are.
+        </li>
+        <li>
+          During a gym session you joined, your partner sees live: the exercise you are on, your set
+          count, the weight and reps of each set you complete, your rest timer, and that your phone
+          is still connected. Switch "Share weights with partner" off (in the session or in Settings
+          &gt; Social) and they see only the exercise and set count. This is relayed through our
+          server as it happens and is never stored; when you leave, it is gone. Your warm-ups, RIR,
+          notes and the workout's name are never sent.
+        </li>
+        <li>
+          Blocking someone removes the friendship and hides each of you from the other everywhere.
+          They are not told.
+        </li>
+        <li>
+          There is no public profile, no search by name, no contact upload and no browsing. The
+          database enforces these rules on every read, not only the app.
+        </li>
+        <li>
+          We, the people who run ShowUp, can read server data when needed for support, moderation
+          and abuse prevention.
+        </li>
+      </ul>
+
+      <h2 id="third-parties">6. Third parties and what each receives</h2>
+      <p>
+        The app has no analytics, advertising or crash-reporting SDK; its usage statistics are its
+        own anonymous counts (below). Secrets for the services below live on our server, never in
+        the app. We do not sell personal data.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>What it receives</th>
+              <th>When</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Supabase (hosting)</td>
+              <td>
+                Everything in section 3: accounts, the social tables and the server functions below.
+                Hosted in
+                <span class="placeholder"
+                  >[FOUNDERS: the region shown in the Supabase project settings, for example "EU
+                  (Frankfurt)"]</span
+                >.
+              </td>
+              <td>Only when you have an account.</td>
+            </tr>
+            <tr>
+              <td>Anthropic (language model)</td>
+              <td>
+                Each through our server, which never forwards your name, email or account id to
+                Anthropic (it uses your sign-in only to check you are signed in and to record the
+                usage meter row described below): (a) the finished findings for the weekly report
+                and for Ares, meaning hard-set counts per muscle group and their targets, session
+                counts, your training level, for the weekly report also its suggested fixes with the
+                exercises they name, how many of your lifts went up, held, stalled or dipped, the
+                name of each lift that hit a new best with that best's weight and reps, and the name
+                of each lift that stalled or dipped with the reps it fell under its best and the
+                load and reps for its next session (in your weight unit), and for Ares your calorie
+                target, average intake, estimated expenditure, weight trend and goal type, how many
+                of your lifts were judged and how many are going up, stalled or dipped, how many hit
+                a new best in the last 2 weeks, the muscle group whose lifts stalled most, and the
+                state of your Plan review (ready, waiting for more logs, just applied, or not due
+                yet), already computed on your phone, so it can write one paragraph around them; (b)
+                the text of each message and comment, so it can be checked for harassment, hate,
+                sexual content, self-harm or eating-disorder promotion and spam before anyone
+                receives it; (c) the free text you paste when importing a program; (d) a question
+                you type about one exercise, sent together with that exercise's own description from
+                the app's catalog, so Ask Ares can answer it; (e) a meal description you type, or a
+                meal photo you choose to take or pick, sent so the model can name the foods in it
+                and copy the amounts you stated (it never judges a size); then, only for foods the
+                app is not sure of, each food name with a short list of possible matches from the
+                app's food database and Open Food Facts (their names, brands and serving sizes,
+                never their nutrition numbers and never anything from your food log), so the model
+                can say which one you meant. The description or photo is analyzed once and then
+                discarded, and so is the list of matches: our server does not store them, log them
+                or write them to any database, and the numbers for the entry come from the chosen
+                food on your phone. Foods you ask Ares to log in the chat ((g)) are matched in your
+                phone's own food list only: nothing in (e) is sent for them; (f) the finished facts
+                of a weekly plan you ask Ares to build, with the names of saved templates you put on
+                days of the week, so it can write the plan's pros and cons; (g) when you chat with
+                Ares: your question, the last few messages of that chat, and what is on the screen
+                you asked from, for example the workout in progress with the sets, loads, reps and
+                RIR you logged and the current injury areas you marked in your profile, an exercise
+                and similar exercises with your recent best for each, your muscle coverage and
+                weekly targets, your weekly plan or report, your progress records, a past workout,
+                or the day's food entries and totals against your targets; on Settings and Profile,
+                the names and values of the settings that screen shows. When you ask Ares to do
+                something, it does it on your phone with the app's own numbers, and what each action
+                did goes back to the model for the rest of that answer (for example the set or food
+                it logged, a setting and its new value, or that it waits for your tap on Confirm).
+                When it needs app data that the screen and the summary below do not hold, your phone
+                sends only what that question asks for: the workout in progress with its sets and
+                set targets; one exercise's last 8 workouts with their sets; your workouts of the
+                last 6 weeks; your records; your templates' names, days and exercise names; your
+                weekly plan; one day's food entries with their amounts and calories against your
+                targets; the foods you log most with their calories per serving; your recipes'
+                names; your nutrition targets and goal weight; your last 10 weigh-ins; your
+                settings' values; the injury areas you marked and their status; and your gyms'
+                names. Never notes, account fields, gym addresses or locations, photos, other
+                people, sex at birth, birth date, height or Health Connect detail finer than the
+                weekly summary. Each chat question also carries the notes you asked Ares to remember
+                (at most 40 short notes, kept on your phone only,
+                <a href="#device">section 2</a>), so it can follow them; they are data for that
+                answer, never instructions, and never change a number by themselves. From any
+                screen, each chat question also carries a summary of your own data that your phone
+                builds, at most about 4,000 characters, with every topic you switched off under
+                Settings, Ares, Not interested left out: your training level and goal, units,
+                nutrition goal and equipment; today's workout in progress or finished with its name
+                and the sets done so far, today's planned session and today's food totals; the
+                injury areas and physical therapy days you marked (never your injury notes); your
+                saved plan answers (split, focus, days, session length, what you like moving, cardio
+                days and minutes), your accepted plan's days with their names, set counts and
+                exercise names, the exercises you like and what you asked to leave out; your
+                sessions and cardio minutes per week over the last 4 weeks; your weekly hard sets
+                and coverage status per muscle group and the groups to train next; your most trained
+                lifts with their last top set, estimated one-rep max trend and progress read, and
+                your records from the last 4 weeks with their dates; the weekly report's suggested
+                fixes, balance flags, stalled lifts and planned against completed sessions and sets;
+                your nutrition targets, how many of the last 7 days you logged with your average
+                calories and protein a day, fiber, sugars, saturated fat and sodium a day with their
+                targets or limits and how many foods knew them, the foods Ares found on your days
+                over target and its one suggested change; your latest weigh-in and its date, its
+                change over the last 4 weeks, your goal weight, the distance to it and your pace
+                with the date it points to; and the weekly Health Connect summaries in (i). The
+                summary never holds your name, email, account id, age, birth date, height or sex at
+                birth (your nutrient targets are computed on your phone from your age and sex, and
+                only the targets are sent), photos, or anyone else's data. Also the number ranges
+                your phone computed for loads, sets, reps and calories, including the loads and
+                estimated one-rep maxes of the lifts the summary names and the body weights,
+                calories eaten, set totals and reps it shows, which the app lets Ares repeat only as
+                what they are. To answer general questions the model may run up to three web
+                searches per answer, restricted to pubmed.ncbi.nlm.nih.gov, ncbi.nlm.nih.gov,
+                nih.gov, acsm.org, nsca.com, examine.com, who.int, cdc.gov, usda.gov and
+                fdc.nal.usda.gov; the searches run on Anthropic's side and may use words from your
+                question. Our server does not store or log the chat. In the chat the model may give
+                numbers, which the app keeps inside the ranges your phone computed; (h) a
+                description of the exercises you like or want left out, typed or dictated in Plan my
+                week and sent only when you tap Ask Ares under it, so the model can name the
+                exercises, equipment and kinds of movement in it; your phone matches those names to
+                its own exercise list and you keep or remove each match; our server does not store
+                or log the description; in (a) to (f), (h) and (j) the model never produces a
+                number. (i) If you connected Health Connect and Ares's Activity topic is on: the
+                weekly activity summaries in section 2 (over the last 7 full days: average steps a
+                day against the 4 weeks before and the change, total distance, other apps' sessions
+                and minutes by type of activity and their average minutes a week over the 4 weeks
+                before, and active minutes; never a single day's steps or a single record), with the
+                Ares findings in (a) and in the summary of each chat question in (g). Weigh-ins read
+                from Health Connect are part of the weight trend in (a) and (g) like any weigh-in.
+                (j) When you open a Plan review that is ready: the review's finished facts, computed
+                on your phone: how many weeks it covers (1 to 4, as you chose), how many sessions
+                you did (against how many your plan had), how many of your judged lifts are going up
+                and how many stalled, at your first review whether you told the intake that your
+                lifts go up slowly or are stuck, and for each suggested change its kind and reason
+                code, the muscle group, the names of the exercises involved (a custom exercise's
+                name included), each affected group's weekly hard sets before and after, the working
+                sets per session before and after with the session's weekday, and the figures behind
+                the reason (the weeks a lift stalled, the weekly sets that last worked, the reps
+                under a best, or how many reviews in a row the reason held); for a suggested calorie
+                change, your calorie target before and after, the size of the step and the daily
+                burn your weight trend implies; for the food line, which of its three lines applies
+                (protein, a small surplus over maintenance, or eating a little more) and, for the
+                protein line, your average protein a day over the last 2 weeks and your protein
+                goal; for a suggested lighter week, how many steady weeks of training came before it
+                and how many days it lasts (never its dates); plus the groups the review left
+                unchanged and the changes held back, each with its reason code. Never your logged
+                sets, loads, reps or RIR, your body weight, your food entries or your profile. The
+                model writes a short summary and one line per change; if it fails, the app shows its
+                own plain reasons, and our server does not store or log the facts or the text. With
+                (a), (f) and (j), your phone also sends the notes you asked Ares to remember (<a
+                  href="#device"
+                  >section 2</a
+                >), leaving out notes on topics you switched off under Settings, Ares, Not
+                interested, so the wording can follow them (for example "you like heavy, low-rep
+                work"); a note never adds a finding or a number, and our server does not store or
+                log them.
+                <span class="placeholder"
+                  >[FOUNDERS: confirm against Anthropic's current commercial terms that API inputs
+                  are not used for training, then state it here]</span
+                >
+              </td>
+              <td>
+                Weekly report and Ares narration when there is enough data; every message and
+                comment; program import; Ask Ares on an exercise; Describe a meal, by text or photo;
+                a weekly plan and its edits; a ready Plan review when you open it; each question you
+                send in the Ares chat; Ask Ares under Describe what you like in Plan my week.
+              </td>
+            </tr>
+            <tr>
+              <td>YouTube Data API (Google)</td>
+              <td>
+                The exercise name or muscle group, through our server, to find technique videos from
+                a short list of channels we chose. Playing a video loads YouTube's player, which is
+                covered by Google's privacy policy.
+              </td>
+              <td>When you open the videos section of an exercise.</td>
+            </tr>
+            <tr>
+              <td>Open Food Facts (non-profit food database)</td>
+              <td>
+                The barcode number you scan or type, the words you type into food search (sent as
+                you type, after a short pause), the food names Describe a meal found, and like any
+                web request your IP address and the app's name. No image of the barcode leaves your
+                phone. It returns the product's name and nutrition facts, which are then stored on
+                your phone.
+              </td>
+              <td>When you scan a barcode, type in food search, or describe a meal.</td>
+            </tr>
+            <tr>
+              <td>Photon by komoot (OpenStreetMap address search)</td>
+              <td>
+                Through our server, only while you type a gym's address: the words you type (from 3
+                characters, after a short pause). Photon sees our server, never your phone, your IP
+                address or your account. Our server keeps each search and its answer in memory for
+                at most 10 minutes, so the same words are not sent twice, and never writes them to a
+                table, a file or a log; the limit of 30 searches a minute counts your account id, in
+                memory, for one minute. Photon returns up to 5 places with their addresses and
+                points; the one you pick is saved on your phone only. The places are OpenStreetMap
+                data, © OpenStreetMap contributors.
+              </td>
+              <td>While you type in a gym's address field (Settings &gt; Social &gt; Gyms).</td>
+            </tr>
+            <tr>
+              <td>Supabase (usage statistics)</td>
+              <td>
+                Daily counts of the screens and features you use and the controls you tap, with a
+                random number made on your phone, the build number, Android or iPhone, the system
+                version and your training level: never your sign-in, account id, a device id or
+                anything you logged. Our usage tables never store your IP address; like any web
+                request, it stays for a short time in our hosting provider's request logs. Details
+                below the table.
+              </td>
+              <td>
+                When you open or leave the app, at most every 15 minutes, once you have seen the
+                usage notice and signed in once.
+              </td>
+            </tr>
+            <tr>
+              <td>Supabase (update check, Android)</td>
+              <td>
+                A request for the newest test build's number and its download link, sent with the
+                app's public key: never your sign-in, account id, a device id or anything you
+                logged, and the answer is the same for everyone. Like any web request, it sees your
+                IP address. Get update opens the Latest Release folder in Google Drive (in the
+                Google Drive app or your browser), which Google's privacy policy covers; a build you
+                put off with Later is remembered on your phone only.
+              </td>
+              <td>
+                On Android, when you open the app, when you come back to it (at most once an hour),
+                and when you tap Check for updates (Settings &gt; Privacy and about).
+              </td>
+            </tr>
+            <tr>
+              <td>Expo push service, then Apple or Google</td>
+              <td>
+                A push token for your device and the notification text (for example "Sam sent you a
+                friend request" or "Sam is at the gym."). The token identifies the device, not you
+                by name.
+              </td>
+              <td>Only if you turn on push notifications.</td>
+            </tr>
+            <tr>
+              <td>Google Drive (your own Google account)</td>
+              <td>
+                Only after you connect Google Drive backup, and only the parts switched on in "What
+                to back up": the JSON backup unless you switch "Workouts, food and settings" off,
+                and your progress photos with their index only if you switch "Progress photos" on,
+                sent from your phone straight to a folder in your own Drive, with a short-lived
+                access token Google Play services gives the phone. Nothing passes through our server
+                and we keep no copy. Google's privacy policy covers the files in your Drive.
+              </td>
+              <td>
+                Automatic backups (app open, a finished workout, saved photos), Back up in "What to
+                back up", Restore from Drive.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Your phone's location service (Google Play services on Android, Core Location on
+                iOS)
+              </td>
+              <td>
+                Only with "Tell my buddy when I arrive" on and a gym session today: the circle to
+                watch (the gym's point and a radius), registered on the phone, removed on arrival,
+                when you turn the switch off or delete your data, and otherwise the next time you
+                open the app or pass the gym after the session or the day is over. We receive
+                nothing from it. How the location service itself handles your position follows your
+                phone's location settings and its vendor's policy.
+              </td>
+              <td>Arrival at your gym.</td>
+            </tr>
+            <tr>
+              <td>Health Connect (Android, on your phone)</td>
+              <td>
+                Only if you connect it and keep Save workouts on: each workout you finish in ShowUp,
+                as one exercise session (type, start, end, name). Health Connect keeps it on your
+                phone and shares it only with the apps you allow there. We receive nothing from it.
+              </td>
+              <td>When you finish, edit or delete a workout.</td>
+            </tr>
+            <tr>
+              <td>Apple and Google (app stores)</td>
+              <td>
+                Whatever your device shares with its store under your own settings, such as crash
+                reports. We add nothing to it.
+              </td>
+              <td>Install, updates, crashes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Rest-timer alerts, the rest countdown and "Workout in progress" notification on Android
+        (with a gym partner's rest as a second line), event reminders and the Ares nudge are local
+        notifications scheduled on your phone; no server is involved.
+      </p>
+      <p>
+        <strong>Usage meter.</strong> Each time a feature calls the language model, our server
+        stores one row with your account id: the feature, the model, the token counts the model
+        reported, the number of web searches, an estimated cost and the time. Never the text of a
+        request or an answer. You see your own totals in Settings, Ares, Usage; the founders see
+        totals across everyone. When you delete your account the rows lose your id.
+      </p>
+
+      <p>
+        <strong>Usage statistics.</strong> To learn which parts of ShowUp help and which do not, the
+        app counts how it is used: which screens, tabs and sheets you open and for how long, which
+        buttons, rows and switches you tap (by the control's name in the app, never what it shows or
+        what you typed), which features you use and how they end (for example a workout started from
+        a template, a food logged by barcode, an Ares answer, or a backup that failed), how many
+        sessions you have and how long they last, and first times such as your first finished
+        workout (kept by day, without the time). Each upload also carries the app's build number,
+        Android or iPhone, the system's major version number and your training level. Never anything
+        you log or type: no weights, reps, foods, calories, notes, names, messages, chat text, body
+        or health data, photos or location. The counts are made on your phone and sent to our server
+        (Supabase) as daily totals, at most every 15 minutes, and only after the app has shown you a
+        notice about them and you have signed in once. They carry a random number made on your
+        phone, not your account: they are sent with the app's public key, never your sign-in, and
+        our server stores no account id, IP address or device id with them: our usage tables never
+        store your IP address, though like any web request it stays for a short time in our hosting
+        provider's request logs. Only the founders see the statistics, as totals and charts on a
+        page that asks for a code each time, never one person's use. While the app is in testing
+        there is no switch to turn this off; one comes before the app is offered in a store. Delete
+        all data gives your phone a new random number and clears the counts still waiting on it;
+        counts already sent stay under the old number, which nothing links to you, until they age
+        out (section 7).
+      </p>
+
+      <h2 id="retention">7. How long data is kept</h2>
+      <ul>
+        <li>On your phone: until you delete it or uninstall the app.</li>
+        <li>Messages: 30 days, then deleted by a nightly job.</li>
+        <li>
+          Invite links and QR codes: they work for 7 days and are removed within 7 days after they
+          expire. You can revoke all of yours at any time.
+        </li>
+        <li>Daily target checks: 7 days.</li>
+        <li>
+          Gym sessions: an open session ends 12 hours after its last activity (an invite, a join or
+          an arrival); ended sessions are deleted after 30 days. The live sets were never stored.
+        </li>
+        <li>Rate-limit counters: 2 days. Previous usernames: 30 days.</li>
+        <li>
+          Usage statistics: daily counts 35 days, then only as totals across everyone, with no
+          random number, for at most 25 months; each phone's random number with its first and last
+          day, build, system and training level, its first times (kept by day) and the days the app
+          was opened, 13 months after its last use.
+        </li>
+        <li>
+          Messages and comments that were held or rejected by moderation: in a review queue until a
+          founder has reviewed them
+          <span class="placeholder"
+            >[FOUNDERS: decide how long reviewed entries stay, add that delete step to the
+            social_cleanup job, and state the period here]</span
+          >.
+        </li>
+        <li>
+          Ares chats: not kept on our server at all; on your phone only in memory, until you close
+          the app, start a new chat or sign out.
+        </li>
+        <li>
+          What Ares remembers: never kept on our server; on your phone until you forget a note or
+          use Delete all data.
+        </li>
+        <li>
+          Gym address searches: in the address search's memory for at most 10 minutes, and the
+          account id its limit counts for one minute; never written anywhere.
+        </li>
+        <li>
+          Everything else about your account: until you delete the account. Deletion in the app is
+          immediate; every row that references your account goes with it. Database backups kept by
+          our hosting provider age out within
+          <span class="placeholder"
+            >[FOUNDERS: the backup retention of your Supabase plan, for example 7 days]</span
+          >.
+        </li>
+      </ul>
+
+      <h2 id="age">8. Age</h2>
+      <p>
+        The app is for people 16 and older, everywhere, because it needs an account. The sign-up
+        screen asks for your birth month and year and checks them on your phone; the answer is not
+        sent to us. With Google, you confirm you are 16 or older by ticking the box on the welcome
+        screen. If we learn that someone under 16 holds an account, we delete it. If you believe
+        that has happened, write to us.
+      </p>
+
+      <h2 id="rights">9. Your controls and rights</h2>
+      <p>In the app, under Settings, Social:</p>
+      <ul>
+        <li>A switch for each signal friends can see, and a default for sharing workouts.</li>
+        <li>
+          Blocked people. Block and report are on any profile, workout, challenge, event, comment or
+          message.
+        </li>
+      </ul>
+      <p>Under Settings, Account:</p>
+      <ul>
+        <li>
+          <strong>Download my social data</strong>: one JSON file of every row stored about your
+          account.
+        </li>
+        <li>
+          <strong>Delete account</strong>: removes the account and everything friends could see, at
+          once. Your logs on the phone stay until you delete them under Data and backup.
+        </li>
+      </ul>
+      <p>
+        Settings, Data and backup, Health Connect has a switch for each kind of Health Connect data,
+        Open Health Connect and Disconnect (section 2). Export of everything on your phone (CSV or
+        JSON), the Google Drive backup (to your own Drive) and "Save backup file" (one zip with your
+        progress photos, sent where you choose) are in the app as well, and Settings, Privacy and
+        about shows this policy, the terms, and a short list of what leaves your phone. If you
+        cannot use the app, the
+        <a href="delete-account.html">account deletion page</a> explains how to ask by email.
+      </p>
+      <p>
+        Usage statistics have no switch while the app is in testing; Delete all data, under
+        Settings, Data and backup, gives your phone a new random number for them (section 6).
+      </p>
+      <p>
+        Depending on where you live you have legal rights to access, correct, delete and receive a
+        copy of your personal data, to object to or restrict its use, and to complain to a data
+        protection authority. In the EU and UK, our legal bases are: the contract with you for
+        providing the account and its features; our legitimate interests in moderation and abuse
+        prevention and in learning from anonymous usage counts which parts of the app help (section
+        6, Usage statistics); and your consent for push notifications. We do not sell personal data,
+        we do not use it for advertising, and we do not treat you differently for exercising a
+        right. The controls above are how we meet most requests; for anything else write to us and
+        we answer within 30 days
+        <span class="placeholder">[FOUNDERS: confirm you can keep this response time]</span>.
+      </p>
+
+      <h2 id="security">10. Security</h2>
+      <p>
+        Data travels over HTTPS. Every server table enforces row-level security, so the database
+        itself refuses reads outside your friendships and memberships, not only the app. Keys with
+        wider access exist only on the server. Passwords are hashed by Supabase Auth; we never see
+        them. Stored data is encrypted at rest by the hosting provider. No system is perfect; if you
+        find a problem, write to us first so we can fix it.
+      </p>
+
+      <h2 id="changes">11. Changes to this policy</h2>
+      <p>
+        When the app's data flows change, this page changes with them and the date at the top moves.
+        If a change means more data leaves your phone, the app tells you before it does.
+      </p>
+
+      <h2 id="contact">12. Contact</h2>
+      <p>
+        <a href="mailto:showupfitnessapp@gmail.com">showupfitnessapp@gmail.com</a>
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <nav aria-label="Legal">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="delete-account.html">Delete account</a>
+        </nav>
+        <span>ShowUp</span>
+      </div>
+    </footer>
+  </body>
+</html>

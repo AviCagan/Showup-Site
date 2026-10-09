@@ -1,4 +1,664 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ShowUp</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0E0F12;color:#F2F2F2;font:16px/1.5 system-ui,sans-serif}h1{color:#FF6B1A;margin:0 0 4px}</style></head>
-<body><main><h1>ShowUp</h1><p>The new site is on its way.</p></main></body></html>
+<html lang="en" class="deck">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://lkamzjbnbgkrzbdnymdo.supabase.co; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#16181C" />
+    <title>ShowUp: log workouts, see what you train</title>
+    <meta
+      name="description"
+      content="ShowUp is a workout logger for Android with a 3D muscle map, a weekly report, a food log and Ares, a coach that reads your own numbers." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ShowUp: log workouts, see what you train" />
+    <meta
+      property="og:description"
+      content="A workout logger with a 3D muscle map that shows how well this week's sets cover each muscle." />
+    <meta property="og:image" content="https://avicagan.github.io/Showup-Site/img/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="img/favicon.png" sizes="64x64" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="site.css" />
+    <script type="module" src="js/site.js"></script>
+  </head>
+  <body class="deck-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header deck-header">
+      <div class="wrap wide">
+        <a class="brand" href="./" aria-current="page">
+          <svg class="brand-mark" viewBox="-50 -50 100 100" aria-hidden="true">
+            <circle r="26" fill="none" stroke="currentColor" stroke-width="8" />
+            <path
+              d="M-13 7 0-6 13 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="7"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span>Show<b>Up</b></span>
+        </a>
+        <nav class="site-nav" aria-label="Site">
+          <a href="#map">Features</a>
+          <a href="download/">Download</a>
+          <a href="privacy.html">Privacy</a>
+        </nav>
+      </div>
+    </header>
+
+    <nav class="deck-dots" aria-label="Slides">
+      <a href="#start" aria-label="Start"></a>
+      <a href="#log" aria-label="Logging"></a>
+      <a href="#map" aria-label="Muscle map"></a>
+      <a href="#report" aria-label="Weekly report"></a>
+      <a href="#ares" aria-label="Ares"></a>
+      <a href="#food" aria-label="Nutrition"></a>
+      <a href="#moves" aria-label="Exercises"></a>
+      <a href="#friends" aria-label="Friends"></a>
+      <a href="#data" aria-label="Your data"></a>
+    </nav>
+
+    <main id="main">
+      <!-- 1. Start -->
+      <section class="slide slide-hero" id="start" aria-labelledby="start-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker">Android · alpha test</p>
+            <h1 id="start-title">Log workouts. See what you actually train.</h1>
+            <p class="lede">
+              ShowUp colors a 3D body by how well this week's hard sets cover each muscle, then says
+              what to add, move or cut.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="download/">Download for Android</a>
+              <a class="button button-secondary" href="#log">See how it works</a>
+            </div>
+            <p class="release-chip" data-release-label hidden></p>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                I read your logs and say only what your numbers support.
+              </p>
+            </div>
+          </div>
+          <figure class="stage slide-visual">
+            <img
+              src="img/map-female.png"
+              width="1018"
+              height="900"
+              alt="The ShowUp muscle map, front and back, in an example week: chest, front shoulders and quads green, back and arms yellow to orange, calves red." />
+            <figcaption>Example week. Red: no sets yet. Green: target met.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 2. Logging -->
+      <section class="slide" id="log" aria-labelledby="log-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">02</span> Logging</p>
+            <h2 id="log-title">Log a set in two taps.</h2>
+            <p class="lede">
+              Every row shows what you did last time. Repeat it with one tap, or beat it.
+            </p>
+            <ul class="points">
+              <li>A target for each set from Ares, updated after every set you finish</li>
+              <li>A rest timer on your lock screen, with Skip and +30 s</li>
+              <li>Supersets, drop sets, warm-ups, RIR or to failure, a plate calculator</li>
+              <li>Cardio with time and distance</li>
+              <li>Bring your history from Strong, Hevy and other apps</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                Last time you did 60 kg × 8. Go for 62.5 kg × 8 this time.
+              </p>
+            </div>
+          </div>
+          <figure class="mock slide-visual" aria-labelledby="log-mock-caption">
+            <div class="phone">
+              <div class="phone-bar"><span>Push day</span><span class="timer">42:10</span></div>
+              <div class="ex-card">
+                <p class="ex-name">Bench Press <span>Barbell</span></p>
+                <p class="ex-ares">
+                  <span class="ares ares-tiny" aria-hidden="true"><i></i><i></i></span>
+                  Your target for each set is under its number
+                </p>
+                <div class="set-table" role="table" aria-label="Sets">
+                  <div class="set-row set-head" role="row">
+                    <span role="columnheader">Set</span>
+                    <span role="columnheader">Previous</span>
+                    <span role="columnheader">kg</span>
+                    <span role="columnheader">Reps</span>
+                    <span role="columnheader">Done</span>
+                  </div>
+                  <div class="set-row is-done" role="row">
+                    <span role="cell">1</span>
+                    <span role="cell">60 × 8</span>
+                    <span role="cell">62.5</span>
+                    <span role="cell">8</span>
+                    <span role="cell"
+                      ><span class="tick"><span class="visually-hidden">Done</span></span></span
+                    >
+                  </div>
+                  <div class="set-row is-done" role="row">
+                    <span role="cell">2</span>
+                    <span role="cell">60 × 8</span>
+                    <span role="cell">62.5</span>
+                    <span role="cell">7</span>
+                    <span role="cell"
+                      ><span class="tick"><span class="visually-hidden">Done</span></span></span
+                    >
+                  </div>
+                  <div class="set-row" role="row">
+                    <span role="cell" class="set-no">3<small>62.5×8</small></span>
+                    <span role="cell">60 × 7</span>
+                    <span role="cell" class="ghost">62.5</span>
+                    <span role="cell" class="ghost">8</span>
+                    <span role="cell"
+                      ><span class="tick tick-open"
+                        ><span class="visually-hidden">Not done</span></span
+                      ></span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="rest-bar"><span>Rest</span><b>1:42</b><span>+30 s</span></div>
+            </div>
+            <figcaption id="log-mock-caption">Illustration of a workout in progress.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 3. Muscle map -->
+      <section class="slide" id="map" aria-labelledby="map-title">
+        <div class="wrap wide slide-grid flip">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">03</span> Muscle map</p>
+            <h2 id="map-title">See what your week covers.</h2>
+            <p class="lede">
+              32 regions on a 3D body you can turn. Each one goes from red to green as your weekly
+              hard sets reach its target.
+            </p>
+            <ul class="points">
+              <li>Targets from your own plan, or from published weekly-volume ranges</li>
+              <li>Female and male bodies, each in two styles</li>
+              <li>Tap a muscle for its sets and target this week</li>
+              <li>Colors mean coverage, never muscle size</li>
+            </ul>
+            <ul class="legend" aria-label="Map colors">
+              <li><span class="swatch swatch-low" aria-hidden="true"></span>No sets yet</li>
+              <li><span class="swatch swatch-mid" aria-hidden="true"></span>Halfway</li>
+              <li><span class="swatch swatch-high" aria-hidden="true"></span>Target met</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                Calves have no sets yet this week. Want me to add some to Friday?
+              </p>
+            </div>
+          </div>
+          <div class="map-switch slide-visual">
+            <input type="radio" name="body" id="body-female" checked />
+            <input type="radio" name="body" id="body-male" />
+            <div class="segmented">
+              <label for="body-female">Female</label>
+              <label for="body-male">Male</label>
+            </div>
+            <figure class="stage">
+              <img
+                class="map-female"
+                src="img/map-female.png"
+                width="1018"
+                height="900"
+                loading="lazy"
+                alt="The female body, front and back, in an example week." />
+              <img
+                class="map-male"
+                src="img/map-male.png"
+                width="1018"
+                height="900"
+                loading="lazy"
+                alt="The male body, front and back, in the same example week." />
+              <figcaption>Example week, drawn from the app's own bodies and colors.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Weekly report and plan -->
+      <section class="slide" id="report" aria-labelledby="report-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">04</span> Weekly report</p>
+            <h2 id="report-title">What to add, move or cut.</h2>
+            <p class="lede">
+              Each week ShowUp checks every muscle group against its target and lists the fixes that
+              matter most.
+            </p>
+            <ul class="points">
+              <li>
+                Plan my week: sessions checked against every group's target before you see them
+              </li>
+              <li>The plan's pros and cons in plain words; swap, move or rebuild a day</li>
+              <li>Tell it about an injury and it leaves out what loads that area</li>
+              <li>New bests and lift trends in the same report</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                Rear delts are short this week. Three sets of face pulls on Thursday would do it.
+              </p>
+            </div>
+          </div>
+          <figure class="mock slide-visual" aria-labelledby="report-mock-caption">
+            <div class="phone">
+              <p class="mock-title">Weekly report</p>
+              <p class="mock-sub">Top 3 fixes</p>
+              <ol class="fixes">
+                <li>
+                  <b>Rear delts</b>
+                  <span>Add 3 sets of Face Pull on Thursday.</span>
+                </li>
+                <li>
+                  <b>Calves</b>
+                  <span>Add 4 sets of Standing Calf Raise this week.</span>
+                </li>
+                <li>
+                  <b>Chest</b>
+                  <span>Move 4 sets of Chest to Friday.</span>
+                </li>
+              </ol>
+              <p class="mock-sub">Plan my week</p>
+              <ul class="week">
+                <li><b>Mon</b>Push</li>
+                <li><b>Tue</b>Rest</li>
+                <li><b>Wed</b>Pull</li>
+                <li><b>Thu</b>Rest</li>
+                <li><b>Fri</b>Legs</li>
+                <li><b>Sat</b>Upper</li>
+              </ul>
+            </div>
+            <figcaption id="report-mock-caption">Illustration of a weekly report.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 5. Ares -->
+      <section class="slide slide-ares" id="ares" aria-labelledby="ares-title">
+        <div class="wrap wide slide-grid flip">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">05</span> Ares</p>
+            <h2 id="ares-title">A coach that reads your numbers.</h2>
+            <p class="lede">
+              Ask Ares from almost any screen. It can change a setting, edit your workout or log a
+              meal, and every change comes with Undo.
+            </p>
+            <ul class="points">
+              <li>Anything that deletes or shares waits for your tap</li>
+              <li>Remembers what you tell it; see or clear it in Settings</li>
+              <li>Never makes up numbers: the app computes, Ares explains</li>
+              <li>Not interested in a topic? Say so, and it stops bringing it up</li>
+            </ul>
+          </div>
+          <figure class="mock slide-visual" aria-labelledby="ares-mock-caption">
+            <div class="phone chat">
+              <div class="chat-head">
+                <span class="ares ares-big" aria-hidden="true"><i></i><i></i></span>
+                <span>Ares</span>
+              </div>
+              <p class="msg msg-me">Move leg day to Friday.</p>
+              <div class="msg msg-ares">
+                <p>Done. Legs is on Friday now.</p>
+                <div class="action-card">
+                  <span>Moved Legs to Friday</span>
+                  <span class="mini-button">Undo</span>
+                </div>
+              </div>
+              <p class="msg msg-me">I train before work.</p>
+              <p class="msg msg-ares">Got it. I'll remember that you train in the morning.</p>
+            </div>
+            <figcaption id="ares-mock-caption">Illustration of the Ares chat.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 6. Nutrition -->
+      <section class="slide" id="food" aria-labelledby="food-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">06</span> Nutrition</p>
+            <h2 id="food-title">Log food without the busywork.</h2>
+            <p class="lede">
+              Search the catalog and online foods together, scan a barcode, or describe a meal in a
+              sentence or a photo.
+            </p>
+            <ul class="points">
+              <li>Ares names the foods and amounts; the app computes every number</li>
+              <li>A meal photo is analyzed once and never stored</li>
+              <li>Recipes, repeat meals, cal and macro rings, vitamins and minerals</li>
+              <li>Weigh-ins and a weight trend</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                I found 2 eggs and 1 slice of toast. Check the amounts, then log.
+              </p>
+            </div>
+          </div>
+          <figure class="mock slide-visual" aria-labelledby="food-mock-caption">
+            <div class="phone">
+              <div class="rings">
+                <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+                  <circle cx="60" cy="60" r="50" class="ring-track" />
+                  <circle cx="60" cy="60" r="50" class="ring-fill" pathLength="100" />
+                </svg>
+                <p class="ring-label"><b>1,240</b> cal left</p>
+              </div>
+              <ul class="macros">
+                <li>
+                  <span>Protein</span><i class="bar"><i class="bar-fill bar-66"></i></i>92 / 140 g
+                </li>
+                <li>
+                  <span>Carbs</span><i class="bar"><i class="bar-fill bar-72"></i></i>180 / 250 g
+                </li>
+                <li>
+                  <span>Fat</span><i class="bar"><i class="bar-fill bar-68"></i></i>48 / 70 g
+                </li>
+              </ul>
+              <p class="mock-sub">Describe a meal</p>
+              <p class="describe">2 eggs and a slice of toast</p>
+              <p class="chips"><span>Egg × 2</span><span>Toast × 1 slice</span></p>
+            </div>
+            <figcaption id="food-mock-caption">Illustration of the food log.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 7. Exercises -->
+      <section class="slide" id="moves" aria-labelledby="moves-title">
+        <div class="wrap wide slide-grid flip">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">07</span> Exercises</p>
+            <h2 id="moves-title">2,298 exercises that move.</h2>
+            <p class="lede">
+              Nearly every exercise in the 2,386-exercise catalog plays a short animation, with the
+              muscles it trains marked in red.
+            </p>
+            <ul class="points">
+              <li>Drag the figure to turn it</li>
+              <li>Technique videos and Ask Ares in every exercise sheet</li>
+              <li>An A to Z library with popular lifts first</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                Not sure about the form? Ask me about any exercise.
+              </p>
+            </div>
+          </div>
+          <figure class="thumbs slide-visual" aria-labelledby="moves-caption">
+            <ul>
+              <li>
+                <img
+                  src="img/exercises/female-squat-barbell-quads.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Back squat
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-bench_press-barbell-chest.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Bench press
+              </li>
+              <li>
+                <img
+                  src="img/exercises/female-deadlift-barbell-erectors.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Deadlift
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-pull_up-none-lats.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Pull-up
+              </li>
+              <li>
+                <img
+                  src="img/exercises/female-kettlebell_swing-kettlebell-glutes.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Kettlebell swing
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-overhead_press-barbell-delt_front.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Overhead press
+              </li>
+              <li>
+                <img
+                  src="img/exercises/female-hip_thrust-barbell-glutes.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Hip thrust
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-row-barbell-upper_back.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Barbell row
+              </li>
+              <li>
+                <img
+                  src="img/exercises/female-lateral_raise-dumbbells-delt_side.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Lateral raise
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-curl-dumbbells-biceps.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Dumbbell curl
+              </li>
+              <li>
+                <img
+                  src="img/exercises/female-lunge-dumbbells-quads.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Lunge
+              </li>
+              <li>
+                <img
+                  src="img/exercises/male-power_clean-barbell-delt_front.png"
+                  width="192"
+                  height="192"
+                  loading="lazy"
+                  alt="" />
+                Power clean
+              </li>
+            </ul>
+            <figcaption id="moves-caption">
+              Exercise previews from the app. Red marks the muscles an exercise trains; it says
+              nothing about your coverage.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 8. Friends -->
+      <section class="slide" id="friends" aria-labelledby="friends-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">08</span> Friends</p>
+            <h2 id="friends-title">Friends who see you show up.</h2>
+            <p class="lede">
+              Friends see your sessions this week, your coverage and your streak. They see weights
+              only in a workout you share or a session you train together, and never your calorie
+              numbers or bodyweight.
+            </p>
+            <ul class="points">
+              <li>Accountability buddies and private groups</li>
+              <li>Challenges on sessions, coverage or days on target, never on weight lifted</li>
+              <li>Plan a gym session together and see when your partner arrives</li>
+              <li>Messages with reactions</li>
+            </ul>
+            <div class="ares-says">
+              <span class="ares" aria-hidden="true"><i></i><i></i></span>
+              <p class="bubble">
+                <span class="bubble-name">Ares</span>
+                Want your training partner to see your sets but not your weights? I can switch that
+                off.
+              </p>
+            </div>
+          </div>
+          <figure class="mock slide-visual" aria-labelledby="friends-mock-caption">
+            <div class="phone">
+              <p class="mock-title">Friends</p>
+              <ul class="friends">
+                <li>
+                  <span class="avatar" aria-hidden="true">S</span>
+                  <span><b>Sam</b>4 sessions · 78% coverage · 6-week streak</span>
+                </li>
+                <li>
+                  <span class="avatar avatar-2" aria-hidden="true">J</span>
+                  <span><b>Jo</b>3 sessions · 64% coverage · 2-week streak</span>
+                </li>
+              </ul>
+              <div class="challenge">
+                <p><b>October sessions</b></p>
+                <p class="challenge-row">
+                  <span>You</span><i class="bar"><i class="bar-fill bar-58"></i></i>7
+                </p>
+                <p class="challenge-row">
+                  <span>Sam</span><i class="bar"><i class="bar-fill bar-50"></i></i>6
+                </p>
+              </div>
+              <p class="never">Never shared: calorie numbers, bodyweight, photos.</p>
+            </div>
+            <figcaption id="friends-mock-caption">Illustration of the Friends screen.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 9. Your data and download -->
+      <section class="slide slide-end" id="data" aria-labelledby="data-title">
+        <div class="wrap wide slide-grid">
+          <div class="slide-copy">
+            <p class="kicker"><span class="slide-no">09</span> Your data</p>
+            <h2 id="data-title">Your logs live on your phone.</h2>
+            <p class="lede">
+              ShowUp works offline. Workouts, food and weight are stored on your phone, and you can
+              take them with you.
+            </p>
+            <ul class="points">
+              <li>Automatic backups to your own Google Drive</li>
+              <li>CSV and JSON export, and restore from a backup</li>
+              <li>Health Connect: steps and weigh-ins in, workouts out</li>
+              <li>
+                Asking Ares sends that screen and a summary of your data through our server, for
+                that answer only
+              </li>
+              <li>
+                Anonymous usage counts (which screens and features get used, never what you log)
+                help decide what to build next
+              </li>
+            </ul>
+            <p class="meta">
+              The <a href="privacy.html">privacy policy</a> lists every piece of data and who can
+              see it. You can <a href="delete-account.html">delete your account</a> in the app or
+              here.
+            </p>
+          </div>
+          <div class="get card slide-visual">
+            <h3>Get the Android alpha</h3>
+            <p>
+              Builds are shared through a Google Drive folder. The app tells you when a new one is
+              out.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="download/">Download for Android</a>
+            </div>
+            <p class="release-chip" data-release-label hidden></p>
+            <div class="get-qr">
+              <img
+                src="img/download-qr.svg"
+                width="160"
+                height="160"
+                alt="QR code that opens the ShowUp download folder on Google Drive" />
+              <p>On a computer? Scan this with your phone's camera.</p>
+            </div>
+            <p class="meta">
+              No iPhone build yet. To hear when there is one, write to
+              <a href="mailto:showupfitnessapp@gmail.com">showupfitnessapp@gmail.com</a>.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap wide footer-grid">
+        <nav aria-label="Legal">
+          <a href="download/">Download</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="delete-account.html">Delete account</a>
+        </nav>
+        <span
+          >Contact: <a href="mailto:showupfitnessapp@gmail.com">showupfitnessapp@gmail.com</a></span
+        >
+        <p class="credits">
+          The body models come from the Blender Foundation's Human Base Meshes and Quaternius's
+          Universal Base Characters (both CC0). Their muscle zones are derived from Z-Anatomy by
+          Lluís Vinent Juanico and the Z-Anatomy project (CC BY-SA 4.0), built on BodyParts3D © The
+          Database Center for Life Science (CC BY-SA 2.1 JP). The body pictures and exercise
+          previews on this site are shared under
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

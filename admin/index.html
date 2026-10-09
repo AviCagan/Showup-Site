@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://lkamzjbnbgkrzbdnymdo.supabase.co; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#16181C" />
+    <title>ShowUp usage statistics</title>
+    <link rel="icon" href="../img/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="../img/favicon.png" sizes="64x64" type="image/png" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../site.css" />
+    <script type="module" src="../js/admin-page.js"></script>
+  </head>
+  <body class="admin-page">
+    <header class="site-header">
+      <div class="wrap wide">
+        <a class="brand" href="../">
+          <svg class="brand-mark" viewBox="-50 -50 100 100" aria-hidden="true">
+            <circle r="26" fill="none" stroke="currentColor" stroke-width="8" />
+            <path
+              d="M-13 7 0-6 13 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="7"
+              stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          <span>Show<b>Up</b></span>
+        </a>
+        <span class="meta">Usage statistics</span>
+      </div>
+    </header>
+
+    <main class="wrap wide">
+      <h1>Usage statistics</h1>
+      <p class="lede">
+        Anonymous counts from the app: which screens and features get used, and who comes back.
+        Totals only; never an install id or anything a person logged.
+      </p>
+
+      <form id="unlock" class="unlock card" method="post" autocomplete="off" novalidate>
+        <fieldset>
+          <legend>Range</legend>
+          <div class="range-options">
+            <input type="radio" name="range" id="range-7" value="7" />
+            <label for="range-7">7 days</label>
+            <input type="radio" name="range" id="range-30" value="30" checked />
+            <label for="range-30">30 days</label>
+            <input type="radio" name="range" id="range-90" value="90" />
+            <label for="range-90">90 days</label>
+          </div>
+        </fieldset>
+        <div>
+          <label class="field-label" for="code">Admin code</label>
+          <div class="code-row">
+            <input
+              class="code-input"
+              id="code"
+              name="code"
+              type="password"
+              inputmode="numeric"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+              maxlength="64"
+              required />
+            <button class="button button-primary" id="unlock-button" type="submit">Unlock</button>
+          </div>
+        </div>
+        <p id="notice" class="notice" role="status" aria-live="polite"></p>
+        <p class="meta">The code is asked for every time and is never saved on this device.</p>
+      </form>
+
+      <noscript><p class="notice notice-error">This page needs JavaScript.</p></noscript>
+
+      <div id="dashboard" class="dashboard" hidden></div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap wide footer-grid">
+        <nav aria-label="Legal">
+          <a href="../">Home</a>
+          <a href="../privacy.html">Privacy</a>
+        </nav>
+        <span>Not linked from the site.</span>
+      </div>
+    </footer>
+  </body>
+</html>

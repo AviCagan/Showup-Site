@@ -1,0 +1,401 @@
+/*
+ * ShowUp website. One stylesheet for every page. Dark only, the app's palette
+ * (src/theme/tokens.ts): gray-900 background, orange-400 accent, light text.
+ * No frameworks, no external fonts, no scripts here.
+ */
+
+:root {
+  color-scheme: dark;
+  --bg: #16181c;
+  --surface: #1b1e23;
+  --surface-raised: #22262c;
+  --border: #2c3138;
+  --border-strong: #3a404a;
+  --text: #f5f6f8;
+  --text-secondary: #a9b0ba;
+  --text-muted: #8a929e;
+  --accent: #ff6b1a;
+  --accent-pressed: #e85c0f;
+  --accent-muted: rgba(255, 107, 26, 0.16);
+  --on-accent: #101215;
+  --measure: 44rem;
+  --touch: 44px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--accent-pressed);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+}
+
+h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1rem;
+}
+
+ul,
+ol {
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+li > ul {
+  margin-top: 0.35rem;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.05em 0.35em;
+  overflow-wrap: anywhere;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+.wrap {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  min-height: 3.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand b {
+  color: var(--accent);
+  font-weight: inherit;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.25rem;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 0.6rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current='page'] {
+  color: var(--text);
+}
+
+main.wrap {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.meta {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.card h2,
+.card h3 {
+  margin-top: 0;
+}
+
+.card p:last-child,
+.card ul:last-child {
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.grid .card {
+  margin: 0;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch);
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.button-primary:hover {
+  background: var(--accent-pressed);
+  color: var(--on-accent);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.button-secondary:hover {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+/* Store badges: founders drop the official images in; the boxes keep the layout until then. */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+}
+
+.badge-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10rem;
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.never {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.never li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 0;
+}
+
+.never strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.placeholder {
+  color: var(--accent);
+  background: var(--accent-muted);
+  border-radius: 4px;
+  padding: 0 0.3em;
+  font-style: normal;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1.25rem;
+  font-size: 0.95rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 1.25rem;
+}
+
+.table-wrap table {
+  margin: 0;
+  min-width: 36rem;
+}
+
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.toc {
+  columns: 2;
+  column-gap: 2rem;
+  font-size: 0.95rem;
+}
+
+.toc a {
+  color: var(--text-secondary);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.site-footer .wrap {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 40rem) {
+  .toc {
+    columns: 1;
+  }
+  .site-nav a {
+    padding: 0 0.45rem;
+  }
+}
