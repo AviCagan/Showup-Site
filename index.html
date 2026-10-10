@@ -36,24 +36,79 @@
           <span>ShowUp</span>
         </a>
         <nav class="site-nav" aria-label="Site">
-          <a href="#map">Map</a>
+          <a class="nav-optional" href="#log">Log</a>
           <a href="#ares">Ares</a>
-          <a class="nav-optional" href="#privacy">Privacy</a>
+          <a href="#map">Map</a>
+          <a class="nav-optional" href="#social">Social</a>
+          <a class="nav-optional" href="privacy.html">Privacy</a>
           <a class="nav-cta" href="download/">Download</a>
         </nav>
       </div>
     </header>
 
     <main id="main">
-      <section class="hero" id="map" aria-labelledby="hero-title">
+      <section class="hero" id="log" aria-labelledby="hero-title">
         <div class="copy reveal">
-          <h1 id="hero-title" class="hero-title">See what you train.</h1>
-          <p class="sub">A 3D body shows how well this week's sets cover every muscle.</p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="h-line">Every set.</span> <span class="h-line">Every meal.</span>
+          </h1>
+          <p class="sub">Last time's set in one tap, a meal in a sentence.</p>
           <div class="cta-row">
             <a class="pill" href="download/">Download</a>
-            <a class="more" href="#log">Learn more</a>
+            <a class="more" href="#ares">Learn more</a>
           </div>
           <p class="hero-fine">Android alpha, ages 16+.</p>
+        </div>
+        <figure
+          class="log-duo reveal"
+          role="img"
+          aria-label="Illustration of the log: bench press, last time 60 kg for 8 reps and today's target 62.5 kg for 8, done; breakfast described as 2 eggs and toast, logged at 217 cal.">
+          <div class="duo-card">
+            <p class="card-title">Bench press</p>
+            <p class="set-line set-last"><span>Last time</span><b>60 kg × 8</b></p>
+            <p class="set-line set-now">
+              <span>Target</span><b>62.5 kg × 8</b><i class="check" aria-hidden="true"></i>
+            </p>
+          </div>
+          <div class="duo-card duo-meal">
+            <p class="card-title">Breakfast</p>
+            <p class="said">2 eggs and toast</p>
+            <p class="set-line set-now">
+              <span>Logged</span><b>217 cal</b><i class="check" aria-hidden="true"></i>
+            </p>
+          </div>
+        </figure>
+      </section>
+
+      <section class="section section-ares" id="ares" aria-labelledby="ares-title">
+        <div class="ares-orb reveal" aria-hidden="true"><i></i><i></i></div>
+        <div class="copy reveal">
+          <h2 id="ares-title">Ares reads the screen you're on.</h2>
+          <p class="sub">It logs sets, adds foods, changes settings and asks before big ones.</p>
+        </div>
+        <figure
+          class="chat reveal"
+          role="img"
+          aria-label="Illustration of the Ares chat on the workout screen: you ask to swap this exercise for dumbbells, Ares swaps in Dumbbell Bench Press and offers Undo.">
+          <p class="sees">Sees: Your workout</p>
+          <p class="msg msg-me">Swap this for dumbbells.</p>
+          <div class="msg-row">
+            <span class="ares-mini" aria-hidden="true"><i></i><i></i></span>
+            <p class="msg msg-ares">
+              Swapped in Dumbbell Bench Press. <span class="undo">Undo</span>
+            </p>
+          </div>
+        </figure>
+        <p class="fine reveal">
+          Asking Ares sends that screen and a summary of your data through our server, for that
+          answer only.
+        </p>
+      </section>
+
+      <section class="section section-map" id="map" aria-labelledby="map-title">
+        <div class="copy reveal">
+          <h2 id="map-title">See what you train.</h2>
+          <p class="sub">A 3D body shows how well this week's sets cover every muscle.</p>
         </div>
         <div class="map-switch reveal" role="group" aria-label="Muscle map, female or male body">
           <input type="radio" name="body" id="body-female" checked />
@@ -64,6 +119,7 @@
               src="img/map-female.png"
               width="1540"
               height="1360"
+              loading="lazy"
               alt="The ShowUp muscle map on the female body, front and back, in an example week: chest, front shoulders and quads green, back and arms yellow to orange, calves red." />
             <img
               class="map-male"
@@ -84,177 +140,123 @@
             <li><span class="swatch swatch-high" aria-hidden="true"></span>Target met</li>
           </ul>
         </div>
-      </section>
-
-      <section class="section section-log" id="log" aria-labelledby="log-title">
-        <div class="copy reveal">
-          <p class="eyebrow">Logging</p>
-          <h2 id="log-title">Beat last time.</h2>
-          <p class="sub">Every row shows last time, so repeating it takes one tap.</p>
-        </div>
-        <figure
-          class="set-card reveal"
-          role="img"
-          aria-label="Illustration of a set in the logger: last time 60 kg for 8 reps, today's target 62.5 kg for 8, done.">
-          <p class="set-name">Bench press</p>
-          <p class="set-line set-last"><span>Last time</span><b>60 kg × 8</b></p>
-          <p class="set-line set-now">
-            <span>Target</span><b>62.5 kg × 8</b><i class="check" aria-hidden="true"></i>
-          </p>
-        </figure>
-      </section>
-
-      <section class="section section-ares" id="ares" aria-labelledby="ares-title">
-        <div class="ares-orb reveal" aria-hidden="true"><i></i><i></i></div>
-        <div class="copy reveal">
-          <p class="eyebrow">Ares</p>
-          <h2 id="ares-title">A coach that reads your numbers.</h2>
-          <p class="sub">Ask from almost any screen, and undo anything it changes.</p>
-        </div>
-        <figure
-          class="chat reveal"
-          role="img"
-          aria-label="Illustration of the Ares chat: you ask to move leg day to Friday, Ares moves it and offers Undo.">
-          <p class="msg msg-me">Move leg day to Friday.</p>
-          <div class="msg-row">
-            <span class="ares-mini" aria-hidden="true"><i></i><i></i></span>
-            <p class="msg msg-ares">Done. Legs is on Friday. <span class="undo">Undo</span></p>
+        <div class="moves reveal">
+          <h3>2,298 exercises that move</h3>
+          <p>Red marks what each trains.</p>
+          <div class="thumbs">
+            <img
+              src="img/exercises/female-squat-barbell-quads.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Back squat, quads in red" />
+            <img
+              src="img/exercises/male-bench_press-barbell-chest.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Bench press, chest in red" />
+            <img
+              src="img/exercises/female-deadlift-barbell-erectors.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Deadlift, lower back in red" />
+            <img
+              src="img/exercises/male-pull_up-none-lats.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Pull-up, lats in red" />
+            <img
+              src="img/exercises/female-kettlebell_swing-kettlebell-glutes.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Kettlebell swing, glutes in red" />
+            <img
+              src="img/exercises/male-overhead_press-barbell-delt_front.png"
+              width="192"
+              height="192"
+              loading="lazy"
+              alt="Overhead press, front shoulders in red" />
           </div>
-        </figure>
+        </div>
       </section>
 
-      <section class="section section-features" aria-label="More in ShowUp">
+      <section class="section section-grow" id="grow" aria-labelledby="grow-title">
+        <div class="copy reveal">
+          <h2 id="grow-title">It changes with you.</h2>
+          <p class="sub">Ares updates as you log.</p>
+        </div>
         <ul class="feature-grid">
           <li class="feature reveal">
-            <h2>Weekly report</h2>
-            <p>What to add, move or cut, every week.</p>
+            <h3>In the gym</h3>
+            <p>Each target moves with the set before.</p>
             <div
-              class="feature-art cov"
+              class="feature-art step-art"
               role="img"
-              aria-label="Illustration: chest at target, back partway, rear delts low with 3 sets to add, calves with no sets yet and 4 to add.">
-              <p>
-                <span>Chest</span><i class="bar"><i class="fill fill-full"></i></i>
+              aria-label="Illustration: set 1 done at 62.5 kg for 8 with 4 reps in reserve, so the next set's target moves to 62.5 kg for 10.">
+              <p class="set-line set-last">
+                <span><em class="tag">RIR 4</em></span
+                ><b>62.5 kg × 8</b><i class="check" aria-hidden="true"></i>
               </p>
-              <p>
-                <span>Back</span><i class="bar"><i class="fill fill-most"></i></i>
-              </p>
-              <p>
-                <span>Rear delts</span><i class="bar"><i class="fill fill-low"></i></i><b>+3</b>
-              </p>
-              <p>
-                <span>Calves</span><i class="bar"><i class="fill fill-none"></i></i><b>+4</b>
-              </p>
+              <p class="set-line set-now"><span>Next</span><b>62.5 kg × 10</b></p>
             </div>
           </li>
           <li class="feature reveal">
-            <h2>2,298 exercises that move</h2>
-            <p>Red marks the muscles each exercise trains.</p>
-            <div class="feature-art thumbs">
-              <img
-                src="img/exercises/female-squat-barbell-quads.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Back squat, quads in red" />
-              <img
-                src="img/exercises/male-bench_press-barbell-chest.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Bench press, chest in red" />
-              <img
-                src="img/exercises/female-deadlift-barbell-erectors.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Deadlift, lower back in red" />
-              <img
-                src="img/exercises/male-pull_up-none-lats.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Pull-up, lats in red" />
-              <img
-                src="img/exercises/female-kettlebell_swing-kettlebell-glutes.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Kettlebell swing, glutes in red" />
-              <img
-                src="img/exercises/male-overhead_press-barbell-delt_front.png"
-                width="192"
-                height="192"
-                loading="lazy"
-                alt="Overhead press, front shoulders in red" />
-            </div>
-          </li>
-          <li class="feature reveal">
-            <h2>Food</h2>
-            <p>
-              Describe a meal or photograph it. <span class="line">The photo is never stored.</span>
-            </p>
+            <h3>In the kitchen</h3>
+            <p>It suggests calorie steps from your weight trend.</p>
             <div
-              class="feature-art rings"
+              class="feature-art step-art"
               role="img"
-              aria-label="Illustration of calorie and macro rings with 1,240 cal left.">
-              <div class="ring-stack">
-                <svg viewBox="0 0 200 200" aria-hidden="true">
-                  <circle class="ring-track" cx="100" cy="100" r="86" />
-                  <circle class="ring-fill ring-1" cx="100" cy="100" r="86" pathLength="100" />
-                  <circle class="ring-track" cx="100" cy="100" r="66" />
-                  <circle class="ring-fill ring-2" cx="100" cy="100" r="66" pathLength="100" />
-                </svg>
-                <p class="ring-label"><b>1,240</b><span>cal left</span></p>
-              </div>
-            </div>
-          </li>
-          <li class="feature reveal">
-            <h2>Friends</h2>
-            <p>They see your sessions, coverage and streak.</p>
-            <div
-              class="feature-art race"
-              role="img"
-              aria-label="Illustration of a sessions challenge: you have 7 sessions, Sam has 6.">
-              <p>
-                <span class="who">You</span><i class="bar"><i class="fill fill-race-1"></i></i
-                ><b>7</b>
-              </p>
-              <p>
-                <span class="who">Sam</span><i class="bar"><i class="fill fill-race-2"></i></i
-                ><b>6</b>
-              </p>
+              aria-label="Illustration of a suggested calorie step: the daily target from 2,000 to 2,150 cal.">
+              <p class="set-line set-last"><span>Now</span><b>2,000 cal</b></p>
+              <p class="set-line set-now"><span>Suggested</span><b>2,150 cal</b></p>
             </div>
           </li>
         </ul>
       </section>
 
-      <section class="section section-privacy" id="privacy" aria-labelledby="privacy-title">
-        <svg class="privacy-mark reveal" viewBox="0 0 64 96" aria-hidden="true">
-          <rect x="4" y="4" width="56" height="88" rx="12" />
-          <path d="M24 45v-6a8 8 0 0 1 16 0v6" />
-          <rect x="20" y="45" width="24" height="18" rx="4" />
-        </svg>
+      <section class="section section-social" id="social" aria-labelledby="social-title">
         <div class="copy reveal">
-          <p class="eyebrow">Privacy</p>
-          <h2 id="privacy-title">Your logs live on your phone.</h2>
-          <p class="sub">ShowUp works offline and backs up to your own Google Drive.</p>
-          <p class="fine">
-            Asking Ares sends that screen and a summary of your data through our server, for that
-            answer only. Anonymous usage counts never include what you log.
-          </p>
-          <a class="more" href="privacy.html">Privacy policy</a>
+          <h2 id="social-title">Friends who see you show up.</h2>
+          <p class="sub">They see your sessions, coverage and streak.</p>
         </div>
+        <figure
+          class="friends reveal"
+          role="img"
+          aria-label="Illustration of Social: Sam's week shows 4 sessions, 78% coverage and a 6-week streak; in a group challenge on sessions you have 7 and Sam has 6.">
+          <p class="friend">
+            <span class="avatar" data-initial="S" aria-hidden="true"></span><b>Sam</b
+            ><span>4 sessions, 78%, 6 wk</span>
+          </p>
+          <p class="race-title">Group challenge</p>
+          <div class="race">
+            <p>
+              <span class="who">You</span><i class="bar"><i class="fill fill-race-1"></i></i
+              ><b>7</b>
+            </p>
+            <p>
+              <span class="who">Sam</span><i class="bar"><i class="fill fill-race-2"></i></i
+              ><b>6</b>
+            </p>
+          </div>
+        </figure>
       </section>
 
       <section class="section section-get" id="get" aria-labelledby="get-title">
         <div class="copy reveal">
           <img class="get-icon" src="img/icon.svg" width="96" height="96" alt="" />
-          <h2 id="get-title">Get ShowUp.</h2>
+          <h2 id="get-title">Show up for yourself.</h2>
           <p class="sub">Android alpha, ages 16 and up.</p>
           <div class="cta-row">
             <a class="pill pill-lg" href="download/">Download</a>
           </div>
           <p class="release-chip" data-release-label hidden></p>
+          <p class="fine">
+            Your logs live on your phone. <a href="privacy.html">Privacy policy</a>
+          </p>
         </div>
       </section>
     </main>

@@ -216,11 +216,14 @@ summary:focus-visible {
   border-radius: 999px;
 }
 
-@media (max-width: 26rem) {
+/* A phone keeps Ares, Map and the pill; Log, Social and Privacy join from 40rem. */
+@media (max-width: 39.99rem) {
   .site-nav .nav-optional {
     display: none;
   }
+}
 
+@media (max-width: 26rem) {
   .site-nav a {
     padding: 0 0.55rem;
   }
@@ -263,11 +266,15 @@ summary:focus-visible {
   letter-spacing: -0.028em;
 }
 
-/* The one tinted headline: the hero's, in the brand orange. */
+/* The one tinted headline: the hero's, in the brand orange, one sentence per line. */
 .hero-title {
   width: fit-content;
   max-width: 100%;
   color: var(--brand);
+}
+
+.h-line {
+  display: block;
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
@@ -412,16 +419,18 @@ summary:focus-visible {
 }
 
 /*
- * Black and near-black bands alternate: hero (black), logging, Ares (black), tiles, privacy
- * (black), download. A card is black on a band and gray on black.
+ * Black and near-black bands alternate: the log (hero, black), Ares, the map (black), "It
+ * changes with you", social (black), download. A card is black on a band and gray on black.
  */
-.section-log,
-.section-features,
+.section-ares,
+.section-grow,
 .section-get {
   background: var(--band);
 }
 
+/* The glows behind the sprite and the map bodies reach past the edges; the band clips them. */
 .section-ares,
+.section-map,
 .section-get {
   overflow: hidden;
 }
@@ -443,7 +452,287 @@ summary:focus-visible {
   }
 }
 
-/* ---------- Hero: the map ---------- */
+/* ---------- The log (hero): a set and a meal, side by side ---------- */
+
+.log-duo {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 30rem);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  text-align: left;
+}
+
+/* The glow: the same warm light as behind the map bodies. */
+.log-duo::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -12% -8%;
+  background:
+    radial-gradient(40% 50% at 30% 45%, rgba(255, 107, 26, 0.16), transparent 70%),
+    radial-gradient(40% 50% at 70% 60%, rgba(255, 107, 26, 0.16), transparent 70%);
+}
+
+/* Where both fit at full size the two cards sit side by side, the meal a step lower. */
+@media (min-width: 60rem) {
+  .log-duo {
+    width: min(100%, 54rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 1.25rem;
+  }
+
+  .duo-meal {
+    margin-top: 3rem;
+  }
+}
+
+.duo-card {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: var(--radius-tile);
+  background: var(--tile);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+
+.card-title {
+  margin: 0 0 1.25rem;
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* One row of a card: a quiet label, a large figure, optionally the tick. */
+.set-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  background: var(--tile);
+  color: var(--text-muted);
+}
+
+.duo-card .set-line {
+  background: var(--raised);
+}
+
+.set-line span {
+  flex: 1;
+  font-size: 0.9375rem;
+}
+
+.set-line b {
+  font-size: clamp(1.375rem, 1.8vw + 0.9rem, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-now {
+  margin-top: 0.625rem;
+  box-shadow: inset 0 0 0 2px var(--brand);
+  color: var(--text-secondary);
+}
+
+.set-now b {
+  color: var(--text);
+}
+
+/* The meal in your own words, on the orange tint the app gives your chat lines. */
+.said {
+  margin: 0;
+  padding: 1.05rem 1.25rem;
+  border-radius: 18px 18px 6px 18px;
+  background: var(--brand-soft);
+  color: var(--text);
+  font-size: clamp(1.125rem, 0.8vw + 0.95rem, 1.375rem);
+  line-height: 1.3;
+}
+
+.check {
+  position: relative;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+.check::after {
+  content: '';
+  position: absolute;
+  left: 36%;
+  top: 22%;
+  width: 26%;
+  height: 46%;
+  border: solid var(--on-accent);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* ---------- Ares (placeholder art, PLAN Q22: the app's AresSprite in CSS, glowing) ---------- */
+
+.ares-orb {
+  --size: clamp(7rem, 14vw, 10rem);
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, var(--brand-hover), var(--brand) 55%, #e85c0f);
+  box-shadow:
+    0 0 48px rgba(255, 107, 26, 0.5),
+    0 0 140px rgba(255, 107, 26, 0.28);
+  animation: ares-bob 2.4s ease-in-out infinite alternate;
+}
+
+/* Eyes: 14% of the size, 36% from the top, 16% apart (AresSprite.tsx). */
+.ares-orb i {
+  position: absolute;
+  top: 36%;
+  width: 14%;
+  height: 14%;
+  border-radius: 50%;
+  background: var(--stage-deep);
+}
+
+.ares-orb i:first-child {
+  left: 28%;
+}
+
+.ares-orb i:last-child {
+  left: 58%;
+}
+
+@keyframes ares-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ares-orb {
+    animation: none;
+  }
+}
+
+.chat {
+  display: grid;
+  gap: 0.875rem;
+  width: min(100%, 30rem);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: var(--radius-tile);
+  background: var(--bg);
+}
+
+/* What the chat reads, as the app's sheet says it under its title ("Sees: Your workout"). */
+.sees {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.25rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: var(--tile);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.sees::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+.section-ares .fine {
+  margin-top: 2rem;
+}
+
+.msg {
+  max-width: 85%;
+  margin: 0;
+  padding: 0.8rem 1.15rem;
+  border-radius: 22px;
+  color: var(--text);
+  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
+  line-height: 1.35;
+  text-align: left;
+}
+
+/* As in the app: your line on the orange tint, Ares's beside its sprite on the raised gray. */
+.msg-me {
+  justify-self: end;
+  border-bottom-right-radius: 6px;
+  background: var(--brand-soft);
+}
+
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+}
+
+.msg-ares {
+  border-bottom-left-radius: 6px;
+  background: var(--raised);
+}
+
+.ares-mini {
+  position: relative;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 34% 28%,
+    var(--brand-hover),
+    var(--brand) 55%,
+    var(--brand-deep)
+  );
+}
+
+.ares-mini i {
+  position: absolute;
+  top: 36%;
+  width: 14%;
+  height: 14%;
+  border-radius: 50%;
+  background: var(--stage-deep);
+}
+
+.ares-mini i:first-child {
+  left: 28%;
+}
+
+.ares-mini i:last-child {
+  left: 58%;
+}
+
+/* Undo sits under Ares's line, as the app puts it on the action's card. */
+.undo {
+  display: table;
+  margin-top: 0.55rem;
+  padding: 0.1rem 0.65rem;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-hover);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* ---------- The map ---------- */
 
 .map-switch {
   display: grid;
@@ -578,216 +867,67 @@ summary:focus-visible {
   background: var(--cov-high);
 }
 
-/* ---------- Logging: one set, last time and today ---------- */
+/* ---------- The previews under the map ---------- */
 
-.set-card {
-  max-width: 32rem;
-  margin: clamp(3rem, 6vw, 5rem) auto 0;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  border-radius: var(--radius-tile);
-  background: var(--bg);
-  text-align: left;
+.moves {
+  max-width: var(--content);
+  margin: clamp(4.5rem, 9vw, 7rem) auto 0;
 }
 
-.set-name {
-  margin: 0 0 1.25rem;
-  color: var(--text);
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.set-line {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.section .moves h3,
+.section .feature h3 {
   margin: 0;
-  padding: 1rem 1.25rem;
+  color: var(--text);
+  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.moves > p,
+.feature > p {
+  max-width: 22rem;
+  margin: 0.6rem auto 0;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* The previews are 192 px; at most 96 CSS px keeps them at 2x, sharp on a phone's screen. */
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 6rem));
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .thumbs {
+    grid-template-columns: repeat(6, minmax(0, 6rem));
+    gap: 1rem;
+  }
+}
+
+.thumbs img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
   border-radius: 18px;
   background: var(--tile);
-  color: var(--text-muted);
 }
 
-.set-line span {
-  flex: 1;
-  font-size: 0.9375rem;
-}
-
-.set-line b {
-  font-size: clamp(1.375rem, 1.8vw + 0.9rem, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-}
-
-.set-now {
-  margin-top: 0.625rem;
-  box-shadow: inset 0 0 0 2px var(--brand);
-  color: var(--text-secondary);
-}
-
-.set-now b {
-  color: var(--text);
-}
-
-.check {
-  position: relative;
-  flex: none;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: var(--brand);
-}
-
-.check::after {
-  content: '';
-  position: absolute;
-  left: 36%;
-  top: 22%;
-  width: 26%;
-  height: 46%;
-  border: solid var(--on-accent);
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-
-/* ---------- Ares (placeholder art, PLAN Q22: the app's AresSprite in CSS, glowing) ---------- */
-
-.ares-orb {
-  --size: clamp(7rem, 14vw, 10rem);
-  position: relative;
-  width: var(--size);
-  height: var(--size);
-  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 28%, var(--brand-hover), var(--brand) 55%, #e85c0f);
-  box-shadow:
-    0 0 48px rgba(255, 107, 26, 0.5),
-    0 0 140px rgba(255, 107, 26, 0.28);
-  animation: ares-bob 2.4s ease-in-out infinite alternate;
-}
-
-/* Eyes: 14% of the size, 36% from the top, 16% apart (AresSprite.tsx). */
-.ares-orb i {
-  position: absolute;
-  top: 36%;
-  width: 14%;
-  height: 14%;
-  border-radius: 50%;
-  background: var(--stage-deep);
-}
-
-.ares-orb i:first-child {
-  left: 28%;
-}
-
-.ares-orb i:last-child {
-  left: 58%;
-}
-
-@keyframes ares-bob {
-  from {
-    translate: 0 0;
-  }
-  to {
-    translate: 0 -6px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ares-orb {
-    animation: none;
-  }
-}
-
-.chat {
-  display: grid;
-  gap: 0.875rem;
-  width: min(100%, 30rem);
-  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
-  padding: clamp(1.25rem, 3vw, 1.75rem);
-  border-radius: var(--radius-tile);
-  background: var(--tile);
-}
-
-.msg {
-  max-width: 85%;
-  margin: 0;
-  padding: 0.8rem 1.15rem;
-  border-radius: 22px;
-  color: var(--text);
-  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
-  line-height: 1.35;
-  text-align: left;
-}
-
-/* As in the app: your line on the orange tint, Ares's beside its sprite on the raised gray. */
-.msg-me {
-  justify-self: end;
-  border-bottom-right-radius: 6px;
-  background: var(--brand-soft);
-}
-
-.msg-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.6rem;
-}
-
-.msg-ares {
-  border-bottom-left-radius: 6px;
-  background: var(--raised);
-}
-
-.ares-mini {
-  position: relative;
-  flex: none;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 34% 28%,
-    var(--brand-hover),
-    var(--brand) 55%,
-    var(--brand-deep)
-  );
-}
-
-.ares-mini i {
-  position: absolute;
-  top: 36%;
-  width: 14%;
-  height: 14%;
-  border-radius: 50%;
-  background: var(--stage-deep);
-}
-
-.ares-mini i:first-child {
-  left: 28%;
-}
-
-.ares-mini i:last-child {
-  left: 58%;
-}
-
-.undo {
-  display: inline-block;
-  margin-left: 0.4rem;
-  padding: 0.1rem 0.65rem;
-  border-radius: 999px;
-  background: var(--brand-soft);
-  color: var(--brand-hover);
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-/* ---------- Feature tiles ---------- */
+/* ---------- It changes with you: two tiles ---------- */
 
 .feature-grid {
   list-style: none;
   display: grid;
   gap: 1.25rem;
   max-width: var(--content);
-  margin: 0 auto;
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
   padding: 0;
 }
 
@@ -807,42 +947,128 @@ summary:focus-visible {
   overflow: hidden;
 }
 
-.section .feature h2 {
-  max-width: none;
-  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.feature > p {
-  max-width: 22rem;
-  margin: 0.6rem auto 0;
-  color: var(--text-secondary);
-  font-size: 1.125rem;
-  line-height: 1.35;
-  text-wrap: balance;
-}
-
-/* A second sentence starts its own line instead of wrapping mid-phrase. */
-.feature > p .line {
-  display: block;
-}
-
 .feature-art {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 15rem;
   padding: 2.25rem 0 2.75rem;
+}
+
+/* Before and after: the row as it was, then the target or step that moved. The figures scale
+   a little lower than the hero's, so "RIR 4" and "62.5 kg × 8" share one row in a 2-up tile. */
+.step-art .set-line {
+  width: min(100%, 24rem);
+  text-align: left;
+}
+
+.step-art .set-line b {
+  font-size: clamp(1.125rem, 1.2vw + 0.85rem, 2rem);
+}
+
+.tag {
+  flex: none;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Social: a friend's week and a group challenge ---------- */
+
+.friends {
+  width: min(100%, 30rem);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: var(--radius-tile);
+  background: var(--tile);
+  text-align: left;
+}
+
+/* A friend's row as the app lists it: the name, and under it what they share this week. */
+.friend {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.875rem;
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border-radius: 18px;
+  background: var(--raised);
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.friend b {
+  color: var(--text);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.friend span:last-child {
+  grid-column: 2;
+  font-variant-numeric: tabular-nums;
+}
+
+.avatar {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand-light);
+  font-weight: 700;
+}
+
+.avatar::before {
+  content: attr(data-initial);
+}
+
+.race-title {
+  margin: 1.75rem 0 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.race {
+  display: grid;
+  gap: 1rem;
+}
+
+.race p {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) 1.5rem;
+  align-items: center;
+  gap: 0.875rem;
+  margin: 0;
+}
+
+.race .who {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.race b {
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .bar {
   position: relative;
   display: block;
-  flex: 1;
-  height: 0.5rem;
+  height: 0.75rem;
   border-radius: 999px;
   background: var(--raised);
   overflow: hidden;
@@ -852,156 +1078,6 @@ summary:focus-visible {
   position: absolute;
   inset: 0 auto 0 0;
   border-radius: inherit;
-}
-
-.cov,
-.race {
-  gap: 1rem;
-}
-
-.cov p,
-.race p {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr) 2rem;
-  align-items: center;
-  gap: 0.875rem;
-  width: min(100%, 21rem);
-  margin: 0;
-}
-
-.cov span,
-.race .who {
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-  text-align: left;
-}
-
-.cov b,
-.race b {
-  grid-column: 3;
-  font-weight: 700;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.cov b {
-  color: var(--brand);
-  font-size: 0.9375rem;
-}
-
-.fill-full {
-  width: 100%;
-  background: var(--cov-high);
-}
-
-.fill-most {
-  width: 72%;
-  background: #a8c94a;
-}
-
-.fill-low {
-  width: 30%;
-  background: #f27b2c;
-}
-
-.fill-none {
-  width: 0.5rem;
-  background: var(--cov-low);
-}
-
-/* The previews are 192 px; at most 96 CSS px keeps them at 2x, sharp on a phone's screen. */
-.thumbs {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 6rem));
-  justify-content: center;
-  align-content: center;
-  gap: 0.625rem;
-  width: 100%;
-}
-
-.thumbs img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  border-radius: 18px;
-  background: var(--tile);
-}
-
-.ring-stack {
-  position: relative;
-  width: 12rem;
-  height: 12rem;
-}
-
-.rings svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.ring-label {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  margin: 0;
-  line-height: 1.1;
-}
-
-.ring-label b {
-  color: var(--text);
-  font-size: 1.875rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-
-.ring-label span {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-}
-
-.ring-track,
-.ring-fill {
-  fill: none;
-  stroke-width: 14;
-}
-
-.ring-track {
-  stroke: var(--raised);
-}
-
-.ring-fill {
-  stroke-linecap: round;
-}
-
-.ring-1 {
-  stroke: var(--brand);
-  stroke-dasharray: 72 100;
-}
-
-.ring-2 {
-  stroke: var(--brand-light);
-  stroke-dasharray: 58 100;
-}
-
-.race p {
-  grid-template-columns: 2.75rem minmax(0, 1fr) 1.5rem;
-}
-
-.race .who {
-  font-weight: 600;
-}
-
-.race b {
-  color: var(--text);
-  font-size: 1.25rem;
-}
-
-.race .bar {
-  height: 0.75rem;
 }
 
 .fill-race-1 {
@@ -1014,20 +1090,7 @@ summary:focus-visible {
   background: var(--text-muted);
 }
 
-/* ---------- Privacy ---------- */
-
-.privacy-mark {
-  display: block;
-  width: 3.5rem;
-  height: 5.25rem;
-  margin: 0 auto 2.5rem;
-  fill: none;
-  stroke: var(--text-secondary);
-  stroke-width: 3;
-  stroke-linejoin: round;
-}
-
-/* ---------- Last call ---------- */
+/* ---------- Last call: Show up for yourself ---------- */
 
 .get-icon {
   display: block;
