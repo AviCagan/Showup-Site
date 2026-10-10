@@ -1,13 +1,16 @@
 /*
- * ShowUp website. One stylesheet for every page. Dark only, the app's palette
- * (src/theme/tokens.ts): gray-900 background, orange-400 accent, light text.
- * No frameworks, no external fonts, no scripts here.
+ * ShowUp website. The shared stylesheet: every page loads it, and it alone styles the policy
+ * pages (privacy, terms, delete account), which also ship inside the app (ADR-0186). Dark only,
+ * the website's palette (ADR-0234): a black page, near-black cards, white headlines, gray text
+ * and the app's orange (src/theme/tokens.ts orange400) for links and actions. Large, tight
+ * headlines and a calm reading column, in the system font. No frameworks, no external fonts,
+ * no scripts here, and no light-mode rule (the in-app policy must not change with the phone).
  */
 
 :root {
   color-scheme: dark;
-  --bg: #16181c;
-  --surface: #1b1e23;
+  --bg: #000;
+  --surface: #16181c;
   --surface-raised: #22262c;
   --border: #2c3138;
   --border-strong: #3a404a;
@@ -15,7 +18,7 @@
   --text-secondary: #a9b0ba;
   --text-muted: #8a929e;
   --accent: #ff6b1a;
-  --accent-pressed: #e85c0f;
+  --accent-pressed: #ff8a47;
   --accent-muted: rgba(255, 107, 26, 0.16);
   --on-accent: #101215;
   --measure: 44rem;
@@ -29,6 +32,7 @@
 html {
   background: var(--bg);
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 4rem;
 }
 
 body {
@@ -36,15 +40,18 @@ body {
   font-family:
     system-ui,
     -apple-system,
+    BlinkMacSystemFont,
     'Segoe UI',
     Roboto,
-    Helvetica,
+    'Helvetica Neue',
     Arial,
     sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text);
   background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -67,26 +74,30 @@ button:focus-visible {
 h1,
 h2,
 h3 {
-  line-height: 1.25;
   margin: 0 0 0.5rem;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 h2 {
-  font-size: 1.375rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
+  margin-top: 3.5rem;
+  font-size: clamp(1.5rem, 1vw + 1.2rem, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h3 {
-  font-size: 1.0625rem;
+  margin-top: 2rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-top: 1.5rem;
 }
 
 p,
@@ -101,11 +112,15 @@ ol {
 }
 
 li {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
 li > ul {
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+strong {
+  font-weight: 600;
 }
 
 code {
@@ -113,7 +128,7 @@ code {
   font-size: 0.9em;
   background: var(--surface-raised);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0.05em 0.35em;
   overflow-wrap: anywhere;
 }
@@ -121,18 +136,40 @@ code {
 hr {
   border: 0;
   border-top: 1px solid var(--border);
-  margin: 2.5rem 0;
+  margin: 3rem 0;
 }
 
+/* The side gutter equals the product and download pages' (site.css --gutter). */
 .wrap {
   max-width: var(--measure);
   margin: 0 auto;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
+@media (min-width: 40rem) {
+  .wrap {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* ---------- Navigation bar: slim, sticky, translucent ---------- */
+
 .site-header {
-  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* The bar and the footer line up with the product and download pages' (site.css --content). */
+.site-header .wrap,
+.site-footer .wrap {
+  max-width: 61.25rem;
 }
 
 .site-header .wrap {
@@ -140,39 +177,75 @@ hr {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.25rem 1rem;
-  min-height: 3.5rem;
+  gap: 0 1rem;
+  min-height: 48px;
+}
+
+/*
+ * A phone may need two rows for the bar; then it scrolls away with the page instead of covering
+ * a contents link's heading (privacy.html#health-connect, which the app opens, included).
+ */
+@media (max-width: 26rem) {
+  html {
+    scroll-padding-top: 1rem;
+  }
+
+  .site-header {
+    position: static;
+  }
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   min-height: var(--touch);
-  font-weight: 700;
-  font-size: 1.125rem;
   color: var(--text);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
+.brand:hover {
+  color: var(--text);
+}
+
+/*
+ * The app mark before the name, as on the other pages (they carry it as an img, and site.css
+ * hides this one). Inline, because the app copies only this file and privacy.html; it is
+ * web/img/icon.svg without its title, which web/__tests__/site.test.js checks.
+ */
+.brand::before {
+  content: '';
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  border-radius: 6px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Crect x='-50' y='-50' width='100' height='100' fill='%2316181C'/%3E%3Ccircle r='26' fill='none' stroke='%23FF6B1A' stroke-width='8'/%3E%3Cpath d='M-13 7 0-6 13 7' fill='none' stroke='%23FF6B1A' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
+/* The name reads as one word in white, as in the site's other bars. */
 .brand b {
-  color: var(--accent);
+  color: inherit;
   font-weight: inherit;
 }
 
 .site-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 0.25rem;
+  gap: 0;
 }
 
 .site-nav a {
   display: inline-flex;
   align-items: center;
   min-height: var(--touch);
-  padding: 0 0.6rem;
+  padding: 0 0.7rem;
   color: var(--text-secondary);
+  font-size: 0.875rem;
   text-decoration: none;
-  font-size: 0.95rem;
 }
 
 .site-nav a:hover,
@@ -180,27 +253,34 @@ hr {
   color: var(--text);
 }
 
+/* ---------- Reading column ---------- */
+
 main.wrap {
-  padding-top: 2rem;
-  padding-bottom: 3rem;
+  padding-top: clamp(3rem, 8vw, 5.5rem);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
 }
 
 .lede {
-  font-size: 1.2rem;
+  margin-top: 1.5rem;
   color: var(--text-secondary);
+  font-size: clamp(1.1875rem, 0.6vw + 1.05rem, 1.375rem);
+  line-height: 1.5;
 }
 
 .meta {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.9375rem;
+}
+
+h1 + .meta {
+  margin-top: 1rem;
 }
 
 .card {
+  margin: 0 0 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 24px;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.25rem;
-  margin: 0 0 1rem;
 }
 
 .card h2,
@@ -209,8 +289,17 @@ main.wrap {
 }
 
 .card p:last-child,
-.card ul:last-child {
+.card ul:last-child,
+.card ol:last-child {
   margin-bottom: 0;
+}
+
+main.wrap > .card {
+  margin-top: 2.5rem;
+}
+
+main.wrap > .card + .card {
+  margin-top: 1.25rem;
 }
 
 .grid {
@@ -224,19 +313,22 @@ main.wrap {
   margin: 0;
 }
 
+/* ---------- Buttons: pills ---------- */
+
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--touch);
-  padding: 0 1.25rem;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
+  padding: 0 1.4rem;
   border: 1px solid transparent;
-  cursor: pointer;
+  border-radius: 999px;
+  font-family: inherit;
   font-size: 1rem;
+  font-weight: 600;
   line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .button-primary {
@@ -283,7 +375,7 @@ main.wrap {
   min-height: 3rem;
   padding: 0.5rem 1rem;
   border: 1px dashed var(--border-strong);
-  border-radius: 8px;
+  border-radius: 12px;
   color: var(--text-muted);
   font-size: 0.85rem;
   text-align: center;
@@ -291,19 +383,18 @@ main.wrap {
 
 .never {
   list-style: none;
-  padding: 0;
-  margin: 0;
   display: grid;
   gap: 0.75rem;
+  margin: 0;
+  padding: 0;
 }
 
 .never li {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 12px;
-  padding: 1rem 1.25rem;
   margin: 0;
+  padding: 1.1rem 1.35rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 16px;
+  background: var(--surface);
 }
 
 .never strong {
@@ -312,70 +403,101 @@ main.wrap {
 }
 
 .placeholder {
-  color: var(--accent);
-  background: var(--accent-muted);
-  border-radius: 4px;
   padding: 0 0.3em;
+  border-radius: 4px;
+  background: var(--accent-muted);
+  color: var(--accent);
   font-style: normal;
 }
 
+/* ---------- Tables ---------- */
+
 table {
   width: 100%;
-  border-collapse: collapse;
   margin: 0 0 1.25rem;
-  font-size: 0.95rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
 }
 
 .table-wrap {
+  margin: 1.25rem 0 1.5rem;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin: 0 0 1.25rem;
+  border-radius: 16px;
+  background: var(--surface);
 }
 
 .table-wrap table {
-  margin: 0;
   min-width: 36rem;
+  margin: 0;
 }
 
 th,
 td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
-  padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid var(--border);
+}
+
+tr:last-child td {
+  border-bottom: 0;
 }
 
 th {
   color: var(--text-secondary);
+  font-size: 0.8125rem;
   font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
+/* ---------- Contents ---------- */
+
 .toc {
+  margin: 2.5rem 0 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 24px;
+  background: var(--surface);
+  font-size: 0.9375rem;
+}
+
+.toc ol {
   columns: 2;
   column-gap: 2rem;
-  font-size: 0.95rem;
+  margin: 0;
+}
+
+.toc li {
+  break-inside: avoid;
 }
 
 .toc a {
   color: var(--text-secondary);
+  text-decoration: none;
 }
 
+.toc a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+/* ---------- Footer ---------- */
+
 .site-footer {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
 }
 
 .site-footer .wrap {
-  padding-top: 1.5rem;
-  padding-bottom: 2rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.5rem 1.5rem;
+  align-items: center;
+  gap: 0.25rem 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .site-footer nav {
@@ -389,13 +511,31 @@ th {
   align-items: center;
   min-height: var(--touch);
   color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--text);
+  text-decoration: underline;
 }
 
 @media (max-width: 40rem) {
-  .toc {
+  .toc ol {
     columns: 1;
   }
+
   .site-nav a {
-    padding: 0 0.45rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* A phone: the three links sit closer, so the bar keeps to one row where the font allows. */
+@media (max-width: 26rem) {
+  .site-header .wrap {
+    column-gap: 0.5rem;
+  }
+
+  .site-nav a {
+    padding: 0 0.4rem;
   }
 }
