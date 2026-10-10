@@ -1,31 +1,49 @@
 /**
- * The admin page (ADR-0231): asks for the code on every load, POSTs it with the chosen range to
- * the `usage-stats` function, and draws every field of the answer. The code lives only in the
- * submit handler's local variable for the one request; the field is cleared as soon as it is
- * read, nothing goes to storage or the URL, and a page restored from the back-forward cache
- * reloads so it asks again. The numbers stay in memory only to redraw on a resize.
+ * The admin page (ADR-0231, ADR-0233): asks for the code on every load, POSTs it with the chosen
+ * range (7, 30 or 90 days, all time, or a custom From and To) to the `usage-stats` function, and
+ * draws every field of the answer. The code lives only in the submit handler's local variable
+ * for the one request; the field is cleared as soon as it is read, nothing goes to storage or
+ * the URL, and a page restored from the back-forward cache reloads so it asks again. The numbers
+ * stay in memory only to redraw on a resize.
  */
 import { columnChart, dataTable, h, hbarList, lineChart, tooltipRow } from './charts.js';
 import {
+  activeByWeek,
+  addDays,
+  checkCustomRange,
+  cohortWeekLabels,
+  drawsByWeek,
+  endsToday,
   featureTotals,
+  FIRST_DAY,
   formatBytes,
   formatCompact,
   formatCount,
+  formatDate,
   formatDay,
+  formatDayRange,
   formatDuration,
   formatGeneratedAt,
   formatPercent,
+  formatTotalTime,
   formatUsd,
   formatWait,
   funnelRows,
   humanizeName,
   humanizeProps,
+  latestFrom,
+  localDay,
   normalizeStats,
+  peopleNote,
+  rangeLabel,
+  RANGES,
   requestStats,
   resultMessage,
   retentionShare,
+  sessionsByWeek,
   stepLabel,
   toolRows,
+  utcDay,
 } from './stats.js';
 
 /** Supabase's free plan caps the database at 500 MB; the meter reads against it. */
@@ -98,51 +116,123 @@ export function heatColor(share) {
   return { background: `rgb(${mix.join(', ')})`, ink: hex(ink), rgb: mix, inkRgb: ink };
 }
 
+/**
+ * The all-time strip (ADR-0233): totals still on record whatever the range, from `allTime`.
+ * Per-day totals are kept 25 months and phones 13 months, so "all time" is what is on record.
+ */
+function allTimePanel(doc, all) {
+  const panel = section(
+    doc,
+    'All time',
+    all.since
+      ? `Everything on record since ${formatDate(all.since)}, whatever the range.`
+      : 'Nothing on record yet.',
+  );
+  panel.classList.add('panel-all-time');
+  const tiles = h(doc, 'ul', { class: 'tiles tiles-compact', 'aria-label': 'All time totals' });
+  tiles.append(
+    tile(doc, 'Phones on record', formatCompact(all.installs)),
+    tile(doc, 'New phones', formatCompact(all.newInstalls), 'Since alpha 27'),
+    tile(doc, 'Sessions', formatCompact(all.sessions)),
+    tile(doc, 'Time in app', formatTotalTime(all.sessionSeconds)),
+    tile(doc, 'Workouts finished', formatCompact(all.workoutsFinished)),
+    tile(doc, 'Sets logged', formatCompact(all.setsLogged)),
+    tile(doc, 'Foods logged', formatCompact(all.foodLogged)),
+    tile(doc, 'Ares questions', formatCompact(all.aresChats), 'Retries not counted'),
+  );
+  panel.append(tiles);
+  return panel;
+}
+
 /** Builds every panel from normalized stats into a fragment. */
 export function renderDashboard(doc, stats, width) {
   const out = doc.createDocumentFragment();
   const chartWidth = Math.max(280, width - 42);
-  const users = stats.usersWindowDays
-    ? `People are counted over the last ${stats.usersWindowDays} days.`
-    : '';
+  const label = rangeLabel(stats);
+  const weekly = drawsByWeek(stats);
 
-  out.append(
-    h(
-      doc,
-      'p',
-      { class: 'dash-meta' },
-      `Last ${stats.range} days, as of ${formatGeneratedAt(stats.generatedAt)}. ${users} ` +
-        'To change the range, pick it above and enter the code again.',
-    ),
+  if (stats.allTime) out.append(allTimePanel(doc, stats.allTime));
+
+  const meta = h(doc, 'p', { class: 'dash-meta' });
+  meta.append(
+    h(doc, 'strong', { class: 'dash-range' }, label),
+    ` · as of ${formatGeneratedAt(stats.generatedAt)}. `,
+    [peopleNote(stats), 'To change the range, pick it above and enter the code again.']
+      .filter(Boolean)
+      .join(' '),
   );
+  out.append(meta);
 
-  // At a glance
+  // At a glance. The rolling counts end on the range's last day: today, or the day it names.
   const o = stats.overview;
+  const today = endsToday(stats);
+  const last = formatDay(stats.to);
   const tiles = h(doc, 'ul', { class: 'tiles', 'aria-label': 'At a glance' });
   tiles.append(
-    tile(doc, 'Active in the last 7 days', formatCompact(o.wau), 'Distinct phones', true),
-    tile(doc, 'Active today', formatCompact(o.activeToday)),
-    tile(doc, 'Active in the last 30 days', formatCompact(o.mau)),
+    tile(
+      doc,
+      today ? 'Active in the last 7 days' : `Active in the 7 days to ${last}`,
+      formatCompact(o.wau),
+      'Distinct phones',
+      true,
+    ),
+    tile(doc, today ? 'Active today' : `Active on ${last}`, formatCompact(o.activeToday)),
+    tile(
+      doc,
+      today ? 'Active in the last 30 days' : `Active in the 30 days to ${last}`,
+      formatCompact(o.mau),
+    ),
+  );
+  if (o.activeInRange !== null) {
+    tiles.append(tile(doc, 'Active in range', formatCompact(o.activeInRange), label));
+  }
+  tiles.append(
     tile(
       doc,
       'New phones',
       formatCompact(o.newInstalls),
-      `In the last ${stats.range} days. Testers from before alpha 27 are not counted.`,
+      `${label}. Testers from before alpha 27 are not counted.`,
     ),
     tile(doc, 'All phones', formatCompact(o.installs), 'Since counting began'),
-    tile(doc, 'Sessions', formatCompact(o.sessions), `In the last ${stats.range} days`),
+    tile(doc, 'Sessions', formatCompact(o.sessions), label),
     tile(doc, 'Average session', formatDuration(o.avgSessionSec)),
   );
   out.append(tiles);
+
+  // Over 120 days the daily series are drawn by week, in 7-day weeks ending on the last day.
+  const weekLabel = (row, long) => (long ? formatDayRange(row.from, row.day) : formatDate(row.day));
+  const dayLabel = (row) => formatDay(row.day);
 
   // Active people
   const active = section(
     doc,
     'Active people',
-    'Distinct phones that used the app that day, in the 7 days and in the 30 days up to it.',
+    weekly
+      ? 'By week: distinct phones that used the app in each 7-day week.'
+      : 'Distinct phones that used the app that day, in the 7 days and in the 30 days up to it.',
   );
   if (stats.active.length === 0) active.append(empty(doc));
-  else {
+  else if (weekly) {
+    const rows = activeByWeek(stats.active);
+    active.append(
+      lineChart(doc, {
+        rows,
+        series: [{ key: 'wau', label: 'That week' }],
+        width: chartWidth,
+        formatY: formatCompact,
+        formatX: weekLabel,
+        ariaLabel: 'Active phones by week, as a line. The table below has every value.',
+      }),
+      dataTable(doc, {
+        caption: 'Active phones by week',
+        columns: [
+          { label: 'Week', value: (r) => formatDayRange(r.from, r.day) },
+          { label: 'Phones', value: (r) => formatCount(r.wau), num: true },
+        ],
+        rows,
+      }),
+    );
+  } else {
     active.append(
       lineChart(doc, {
         rows: stats.active,
@@ -153,7 +243,7 @@ export function renderDashboard(doc, stats, width) {
         ],
         width: chartWidth,
         formatY: formatCompact,
-        formatX: (row) => formatDay(row.day),
+        formatX: dayLabel,
         ariaLabel: 'Active phones per day, as three lines. The table below has every value.',
       }),
       dataTable(doc, {
@@ -174,18 +264,22 @@ export function renderDashboard(doc, stats, width) {
   const sessions = section(
     doc,
     'Sessions',
-    'Times the app was opened each day. Hover or use the arrow keys for the average length.',
+    weekly
+      ? 'By week: times the app was opened in each 7-day week. Hover or use the arrow keys for the average length.'
+      : 'Times the app was opened each day. Hover or use the arrow keys for the average length.',
   );
-  if (stats.sessions.length === 0) sessions.append(empty(doc));
+  const sessionRows = weekly ? sessionsByWeek(stats.sessions) : stats.sessions;
+  if (sessionRows.length === 0) sessions.append(empty(doc));
   else {
+    const per = weekly ? 'by week' : 'per day';
     sessions.append(
       columnChart(doc, {
-        rows: stats.sessions,
+        rows: sessionRows,
         value: (row) => row.sessions,
         width: chartWidth,
         formatY: formatCompact,
-        formatX: (row) => formatDay(row.day),
-        ariaLabel: 'Sessions per day, as columns. The table below has every value.',
+        formatX: weekly ? weekLabel : dayLabel,
+        ariaLabel: `Sessions ${per}, as columns. The table below has every value.`,
         describe: (row) => [
           tooltipRow(
             doc,
@@ -197,13 +291,15 @@ export function renderDashboard(doc, stats, width) {
         ],
       }),
       dataTable(doc, {
-        caption: 'Sessions per day',
+        caption: `Sessions ${per}`,
         columns: [
-          { label: 'Day', value: (r) => r.day },
+          weekly
+            ? { label: 'Week', value: (r) => formatDayRange(r.from, r.day) }
+            : { label: 'Day', value: (r) => r.day },
           { label: 'Sessions', value: (r) => formatCount(r.sessions), num: true },
           { label: 'Average length', value: (r) => formatDuration(r.avgSec), num: true },
         ],
-        rows: stats.sessions,
+        rows: sessionRows,
       }),
     );
   }
@@ -405,10 +501,11 @@ export function renderDashboard(doc, stats, width) {
     const thead = h(doc, 'thead');
     thead.append(head);
     const tbody = h(doc, 'tbody');
-    for (const row of stats.retention) {
+    const weekLabels = cohortWeekLabels(stats.retention);
+    for (const [i, row] of stats.retention.entries()) {
       const tr = h(doc, 'tr');
       tr.append(
-        h(doc, 'td', {}, `Week of ${formatDay(row.cohortWeek)}`),
+        h(doc, 'td', {}, weekLabels[i]),
         h(doc, 'td', { class: 'num' }, formatCount(row.installs)),
       );
       for (const count of [row.d1, row.d7, row.d30]) {
@@ -567,9 +664,45 @@ export function initAdmin(doc, win, deps = {}) {
   const button = doc.getElementById('unlock-button');
   const notice = doc.getElementById('notice');
   const dashboard = doc.getElementById('dashboard');
-  if (!form || !input || !button || !notice || !dashboard) return null;
+  const custom = doc.getElementById('custom-range');
+  const fromInput = doc.getElementById('range-from');
+  const toInput = doc.getElementById('range-to');
+  if (!form || !input || !button || !notice || !dashboard || !custom || !fromInput || !toInput) {
+    return null;
+  }
   const now = deps.now ?? (() => Date.now());
   const request = deps.requestStats ?? requestStats;
+  // The viewer's own time zone unless a test names one.
+  const timeZone = deps.timeZone;
+
+  /** The picked range: 7, 30 or 90 days, 'all' or 'custom' (30 for anything else). */
+  const pickedRange = () => {
+    const value = new win.FormData(form).get('range');
+    if (value === 'all' || value === 'custom') return value;
+    const days = Number(value);
+    return RANGES.includes(days) ? days : 30;
+  };
+
+  // The date fields: shown only for Custom, from FIRST_DAY to the viewer's own today (From to the
+  // UTC day when that is earlier, east of UTC), and filled with the last 30 days when empty.
+  const syncCustom = () => {
+    const at = now();
+    const today = localDay(at, timeZone);
+    fromInput.min = FIRST_DAY;
+    toInput.min = FIRST_DAY;
+    fromInput.max = latestFrom(today, utcDay(at));
+    toInput.max = today;
+    if (!toInput.value) toInput.value = today;
+    if (!fromInput.value) {
+      const start = addDays(today, -29);
+      fromInput.value = start < FIRST_DAY ? FIRST_DAY : start;
+    }
+    custom.hidden = pickedRange() !== 'custom';
+  };
+  form.addEventListener('change', (event) => {
+    if (event.target?.name === 'range') syncCustom();
+  });
+  syncCustom();
 
   let stats = null;
   // The width the charts were last drawn at; a resize that keeps it (a phone's toolbar hiding as
@@ -615,6 +748,20 @@ export function initAdmin(doc, win, deps = {}) {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (busy || now() < lockedUntil) return;
+    // A custom range is checked before the code is touched: a refused range reads nothing and
+    // leaves the field as typed, and the date to fix gets the focus.
+    const range = pickedRange();
+    const asked =
+      range === 'custom' ? { range, from: fromInput.value, to: toInput.value } : { range };
+    if (range === 'custom') {
+      const at = now();
+      const problem = checkCustomRange(asked.from, asked.to, localDay(at, timeZone), utcDay(at));
+      if (problem) {
+        say(problem.message, 'error');
+        (problem.field === 'from' ? fromInput : toInput).focus();
+        return;
+      }
+    }
     // The only copy of the code: read, cleared from the field at once, sent once, dropped.
     let code = input.value.trim();
     input.value = '';
@@ -623,19 +770,18 @@ export function initAdmin(doc, win, deps = {}) {
       input.focus();
       return;
     }
-    const range = Number(new win.FormData(form).get('range')) || 30;
     busy = true;
     button.disabled = true;
     dashboard.setAttribute('aria-busy', 'true');
-    say(`Loading the last ${range} days…`);
-    const result = await request({ code, range });
+    say(`Loading ${rangeLabel(asked, { sentence: true })}…`);
+    const result = await request({ code, ...asked });
     code = '';
     busy = false;
     dashboard.removeAttribute('aria-busy');
     if (result.kind === 'ok') {
       stats = normalizeStats(result.stats);
       button.disabled = false;
-      say(`Loaded the last ${stats.range || range} days.`, 'ok');
+      say(`Loaded ${rangeLabel(stats.range ? stats : asked, { sentence: true })}.`, 'ok');
       draw();
       return;
     }

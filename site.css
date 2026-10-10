@@ -1206,10 +1206,11 @@ summary:focus-visible {
   padding-bottom: 4rem;
 }
 
+/* Wide enough for the five range choices on one row; a phone wraps them. */
 .unlock {
   display: grid;
   gap: 1rem;
-  max-width: 32rem;
+  max-width: 36rem;
 }
 
 .unlock fieldset {
@@ -1226,11 +1227,15 @@ summary:focus-visible {
   font-weight: 600;
 }
 
+/* Five choices wrap onto a second row on a phone; the group's corners stay round either way. */
 .range-options {
   display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: 100%;
   padding: 3px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: 25px;
   background: var(--stage-deep);
 }
 
@@ -1245,7 +1250,7 @@ summary:focus-visible {
   display: inline-flex;
   align-items: center;
   min-height: var(--touch);
-  padding: 0 1rem;
+  padding: 0 0.85rem;
   border-radius: 999px;
   color: var(--text-secondary);
   font-weight: 600;
@@ -1260,6 +1265,62 @@ summary:focus-visible {
 .range-options input:focus-visible + label {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* When the choices wrap, each row fills the group evenly. */
+.range-options label {
+  flex: 1 0 auto;
+  justify-content: center;
+}
+
+@media (max-width: 30rem) {
+  .range-options label {
+    padding: 0 0.8rem;
+  }
+}
+
+/* Custom range: two native date fields side by side, stacked when there is no room. */
+.date-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.date-fields[hidden] {
+  display: none;
+}
+
+/* Side by side from about 21rem of room; a phone stacks them. The track can shrink, so a
+   browser's wide date control never pushes past the card. */
+.date-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+.date-input {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--stage-deep);
+  color: var(--text);
+  color-scheme: dark;
+  font: inherit;
+}
+
+.date-input:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.date-hint {
+  flex-basis: 100%;
+  margin: 0;
 }
 
 .code-row {
@@ -1325,8 +1386,40 @@ summary:focus-visible {
 }
 
 .dash-meta {
+  margin: 1.5rem 0 0;
   color: var(--text-muted);
   font-size: 0.9rem;
+}
+
+.dash-meta .dash-range {
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+/* The all-time strip: the same tiles, smaller, two to a row on a phone. */
+.panel-all-time {
+  margin-top: 0;
+}
+
+.tiles.tiles-compact {
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  margin-top: 0;
+}
+
+/* Eight tiles: two rows of four once there is room, never a lone tile on a row. */
+@media (min-width: 40rem) {
+  .tiles.tiles-compact {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tiles-compact .tile {
+  padding: 0.75rem;
+  background: var(--stage-deep);
+}
+
+.tiles-compact .tile-value {
+  font-size: 1.35rem;
 }
 
 .tiles {

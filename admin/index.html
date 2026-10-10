@@ -54,6 +54,38 @@
             <label for="range-30">30 days</label>
             <input type="radio" name="range" id="range-90" value="90" />
             <label for="range-90">90 days</label>
+            <input type="radio" name="range" id="range-all" value="all" />
+            <label for="range-all">All time</label>
+            <input
+              type="radio"
+              name="range"
+              id="range-custom"
+              value="custom"
+              aria-controls="custom-range" />
+            <label for="range-custom">Custom</label>
+          </div>
+          <div id="custom-range" class="date-fields" hidden>
+            <div class="date-field">
+              <label class="field-label" for="range-from">From</label>
+              <input
+                class="date-input"
+                id="range-from"
+                name="from"
+                type="date"
+                min="2026-01-01"
+                aria-describedby="custom-hint" />
+            </div>
+            <div class="date-field">
+              <label class="field-label" for="range-to">To</label>
+              <input
+                class="date-input"
+                id="range-to"
+                name="to"
+                type="date"
+                min="2026-01-01"
+                aria-describedby="custom-hint" />
+            </div>
+            <p id="custom-hint" class="meta date-hint">Up to 800 days, from Jan 1, 2026 on.</p>
           </div>
         </fieldset>
         <div>

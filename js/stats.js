@@ -1,7 +1,8 @@
 /**
- * The admin page's data layer (ADR-0231): the request to the `usage-stats` function, what its
- * answer means, and the shaping and formatting of the aggregates. No DOM here, so Jest can test
- * all of it (web/__tests__/stats.test.ts).
+ * The admin page's data layer (ADR-0231, ADR-0233): the request to the `usage-stats` function
+ * for a preset, all time or a custom From and To, what its answer means, the range labels, the
+ * weekly bucketing of long ranges, and the shaping and formatting of the aggregates. No DOM here,
+ * so Jest can test all of it (web/__tests__/stats.test.js).
  *
  * The code the founder types is a parameter of `requestStats` and nothing else: it is never
  * stored, logged or put in a URL, and the caller drops it as soon as the request is sent.
@@ -14,10 +15,100 @@ import {
   SUPABASE_URL,
 } from './config.js';
 
+/** The preset ranges, in days ending today (ADR-0233 adds 'all' and 'custom' beside them). */
 export const RANGES = [7, 30, 90];
+/** The earliest day the function takes: usage_ingest's floor. */
+export const FIRST_DAY = '2026-01-01';
+/** The longest custom range, in days: the rollup keeps 25 months, about 761 days. */
+export const MAX_RANGE_DAYS = 800;
+/** Daily charts up to this many days; past it the series are drawn by week. */
+export const WEEKLY_OVER_DAYS = 120;
 
 function isRecord(value) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** A UTC calendar day as 'YYYY-MM-DD' to its midnight in ms, or NaN (2026-02-30 is NaN). */
+function dayTime(day) {
+  const match = typeof day === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(day) : null;
+  if (!match) return NaN;
+  const [y, m, d] = match.slice(1).map(Number);
+  const time = Date.UTC(y, m - 1, d);
+  const back = new Date(time);
+  return back.getUTCFullYear() === y && back.getUTCMonth() === m - 1 && back.getUTCDate() === d
+    ? time
+    : NaN;
+}
+
+/** Whether `value` is a real calendar day written 'YYYY-MM-DD'. */
+export function isDay(value) {
+  return Number.isFinite(dayTime(value));
+}
+
+/** 'YYYY-MM-DD' plus `n` days (calendar arithmetic, no time zone involved). */
+export function addDays(day, n) {
+  return new Date(dayTime(day) + n * DAY_MS).toISOString().slice(0, 10);
+}
+
+/** Days from `from` to `to`, both counted: 2026-10-01 to 2026-10-09 is 9. */
+export function daySpan(from, to) {
+  return Math.round((dayTime(to) - dayTime(from)) / DAY_MS) + 1;
+}
+
+/**
+ * The viewer's own calendar day at `ms`, as 'YYYY-MM-DD' (the To field's max). `timeZone`, an
+ * IANA name, stands in for the viewer's own (the DOM test puts the viewer east or west of UTC).
+ */
+export function localDay(ms, timeZone) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date(ms));
+  const part = (type) => parts.find((p) => p.type === type)?.value ?? '';
+  return `${part('year')}-${part('month')}-${part('day')}`;
+}
+
+/** The UTC calendar day at `ms`, as 'YYYY-MM-DD': the server's today. */
+export function utcDay(ms) {
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+/**
+ * The latest From the server takes: the earlier of the viewer's `today` and the UTC day. East of
+ * UTC the viewer's day can be the server's tomorrow; the database reads a later To through its
+ * today, but a From past it would start after the range ends.
+ */
+export function latestFrom(today, utcToday) {
+  return isDay(utcToday) && (!isDay(today) || utcToday < today) ? utcToday : today;
+}
+
+/**
+ * The custom range's problem before anything is sent, or null when it is fine: both days set,
+ * From on or after FIRST_DAY, To not after the viewer's `today`, From not after To nor after
+ * the UTC day `utcToday` (see latestFrom), and at most MAX_RANGE_DAYS days. `field` names the
+ * input to fix.
+ */
+export function checkCustomRange(from, to, today, utcToday) {
+  if (!isDay(from)) return { field: 'from', message: 'Pick a From date.' };
+  if (!isDay(to)) return { field: 'to', message: 'Pick a To date.' };
+  if (from < FIRST_DAY)
+    return { field: 'from', message: 'From can be Jan 1, 2026 at the earliest.' };
+  if (isDay(today) && to > today) return { field: 'to', message: 'To can be today at the latest.' };
+  if (from > to) return { field: 'from', message: 'From must be on or before To.' };
+  if (isDay(utcToday) && from > utcToday) {
+    return {
+      field: 'from',
+      message: `From can be ${formatDate(utcToday)} at the latest (today in UTC).`,
+    };
+  }
+  if (daySpan(from, to) > MAX_RANGE_DAYS) {
+    return { field: 'from', message: `Pick ${MAX_RANGE_DAYS} days or fewer.` };
+  }
+  return null;
 }
 
 /**
@@ -41,13 +132,23 @@ export function classifyResponse(status, body) {
 }
 
 /**
- * POSTs `{ code, range }` and resolves with a classified result; never rejects. `origin` is this
+ * The POST body: `{ code, range }` for 7, 30, 90 or 'all', and `{ code, range: 'custom', from,
+ * to }` with the two days for a custom range.
+ */
+export function requestBody({ code, range, from, to }) {
+  return range === 'custom' ? { code, range, from, to } : { code, range };
+}
+
+/**
+ * POSTs the request body and resolves with a classified result; never rejects. `origin` is this
  * page's (the browser's `location.origin`): from an address the function does not answer, the
  * browser would hide its 403 and the failure would read as a network problem, so nothing is sent.
  */
 export async function requestStats({
   code,
   range,
+  from,
+  to,
   fetch: fetchImpl,
   timeoutMs,
   origin = globalThis.location?.origin,
@@ -67,7 +168,7 @@ export async function requestStats({
           apikey: SUPABASE_ANON_KEY,
           Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         },
-        body: JSON.stringify({ code, range }),
+        body: JSON.stringify(requestBody({ code, range, from, to })),
         cache: 'no-store',
         credentials: 'omit',
         referrerPolicy: 'no-referrer',
@@ -133,19 +234,53 @@ function list(value) {
   return Array.isArray(value) ? value.filter(isRecord) : [];
 }
 
+function dayOrEmpty(value) {
+  return isDay(value) ? value : '';
+}
+
+/** The answer's range: 7, 30 or 90 days, 'all' or 'custom'; 0 when it says none. */
+function rangeOf(value) {
+  return value === 'all' || value === 'custom' ? value : num(value);
+}
+
+/** The all-time block (ADR-0233), or null for an answer from before it. */
+function allTimeOf(value) {
+  if (!isRecord(value)) return null;
+  return {
+    since: isDay(value.since) ? value.since : null,
+    installs: num(value.installs),
+    newInstalls: num(value.newInstalls),
+    activeInstalls: num(value.activeInstalls),
+    sessions: num(value.sessions),
+    sessionSeconds: num(value.sessionSeconds),
+    workoutsFinished: num(value.workoutsFinished),
+    setsLogged: num(value.setsLogged),
+    foodLogged: num(value.foodLogged),
+    aresChats: num(value.aresChats),
+  };
+}
+
 /**
  * The answer with every field the contract names present and typed: missing arrays become empty,
  * missing numbers 0 (or null where "not yet" means something), so a partial answer still renders.
+ * An answer from before ADR-0233 (no from, to, days, allTime or activeInRange) renders too: its
+ * days come from the preset range, and the parts that need the new fields are left out.
  */
 export function normalizeStats(body) {
   const b = isRecord(body) ? body : {};
   const overview = isRecord(b.overview) ? b.overview : {};
   const funnels = isRecord(b.funnels) ? b.funnels : {};
   const ares = isRecord(b.ares) ? b.ares : {};
+  const range = rangeOf(b.range);
+  const days = numOrNull(b.days);
   return {
     generatedAt: str(b.generatedAt),
-    range: num(b.range),
+    range,
+    from: dayOrEmpty(b.from),
+    to: dayOrEmpty(b.to),
+    days: days ?? (RANGES.includes(range) ? range : null),
     usersWindowDays: numOrNull(b.usersWindowDays),
+    allTime: allTimeOf(b.allTime),
     overview: {
       installs: num(overview.installs),
       activeToday: num(overview.activeToday),
@@ -154,6 +289,7 @@ export function normalizeStats(body) {
       sessions: num(overview.sessions),
       avgSessionSec: num(overview.avgSessionSec),
       newInstalls: num(overview.newInstalls),
+      activeInRange: numOrNull(overview.activeInRange),
     },
     active: list(b.active).map((r) => ({
       day: str(r.day),
@@ -248,6 +384,61 @@ export function featureTotals(features, stickiness) {
       usersExact: people.has(entry.name),
     }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+/**
+ * Daily rows in 7-day weeks that end on the last row's day, so the newest week is whole and
+ * only the oldest can be short. Each week is `{ from, day, rows }`: its first and last day and
+ * its rows, oldest week first.
+ */
+function weeks(rows) {
+  const last = rows.length > 0 ? rows[rows.length - 1].day : '';
+  if (!isDay(last)) return [];
+  const byIndex = new Map();
+  for (const row of rows) {
+    if (!isDay(row.day) || row.day > last) continue;
+    const index = Math.floor((daySpan(row.day, last) - 1) / 7);
+    const week = byIndex.get(index) ?? {
+      from: row.day,
+      day: addDays(last, -7 * index),
+      rows: [],
+    };
+    if (row.day < week.from) week.from = row.day;
+    week.rows.push(row);
+    byIndex.set(index, week);
+  }
+  return [...byIndex.entries()].sort((a, b) => b[0] - a[0]).map(([, week]) => week);
+}
+
+/**
+ * Active phones by week: each week's last-day `wau`, which counts the distinct phones of the 7
+ * days up to that day. Each week is labeled with those 7 days (`from` to `day`): the oldest
+ * week, when short, reads as the whole 7 days its count covers, some of them before the range.
+ */
+export function activeByWeek(active) {
+  return weeks(active).map((week) => {
+    const last = week.rows.reduce((a, b) => (b.day > a.day ? b : a));
+    return { from: addDays(last.day, -6), day: last.day, wau: last.wau };
+  });
+}
+
+/** Sessions by week: the week's sessions summed, its average length weighted by sessions. */
+export function sessionsByWeek(sessions) {
+  return weeks(sessions).map((week) => {
+    const total = week.rows.reduce((sum, r) => sum + r.sessions, 0);
+    const seconds = week.rows.reduce((sum, r) => sum + r.sessions * r.avgSec, 0);
+    return {
+      from: week.from,
+      day: week.day,
+      sessions: total,
+      avgSec: total > 0 ? Math.round(seconds / total) : 0,
+    };
+  });
+}
+
+/** Whether the answer's daily series are drawn by week (over WEEKLY_OVER_DAYS days). */
+export function drawsByWeek(stats) {
+  return (stats.days ?? 0) > WEEKLY_OVER_DAYS;
 }
 
 /** Funnel rows with each step's share of the first step and of the step before it. */
@@ -402,12 +593,21 @@ const SHORT_DAY = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
   timeZone: 'UTC',
 });
-const DATE_TIME = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
+// The same month-day-year order as the range labels ("Oct 1 to Oct 9, 2026"), 24-hour time.
+const DATE_TIME = new Intl.DateTimeFormat('en-US', {
   month: 'short',
+  day: 'numeric',
   year: 'numeric',
   hour: '2-digit',
   minute: '2-digit',
+  hourCycle: 'h23',
+  timeZone: 'UTC',
+});
+
+const LONG_DAY = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
   timeZone: 'UTC',
 });
 
@@ -417,7 +617,85 @@ export function formatDay(day) {
   return Number.isFinite(time) ? SHORT_DAY.format(new Date(time)) : str(day);
 }
 
-/** An ISO time as "9 Oct 2026, 18:30 UTC". */
+/**
+ * "2026-10-03" -> "Oct 3, 2026". The answer's days are UTC calendar days, read and formatted in
+ * UTC, so the viewer's time zone never moves them to the day before.
+ */
+export function formatDate(day) {
+  const time = dayTime(day);
+  return Number.isFinite(time) ? LONG_DAY.format(new Date(time)) : str(day);
+}
+
+/** "Oct 1 to Oct 9, 2026"; the year on both ends when they differ; one day once. */
+export function formatDayRange(from, to) {
+  if (from === to) return formatDate(to);
+  if (from.slice(0, 4) === to.slice(0, 4)) return `${formatDay(from)} to ${formatDate(to)}`;
+  return `${formatDate(from)} to ${formatDate(to)}`;
+}
+
+/**
+ * The retention rows' labels: "Week of Mar 2", with the year on every row ("Week of Mar 2,
+ * 2026") when the weeks fall in more than one calendar year (an all-time or long range).
+ */
+export function cohortWeekLabels(retention) {
+  const years = new Set(retention.map((r) => str(r.cohortWeek).slice(0, 4)));
+  const format = years.size > 1 ? formatDate : formatDay;
+  return retention.map((r) => `Week of ${format(r.cohortWeek)}`);
+}
+
+/** Raw rows, and so the people counts, reach this many days back (ADR-0229). */
+export const USERS_WINDOW_DAYS = 35;
+
+/**
+ * The one label every "last N days" line comes from: "Last 30 days", "All time, since Oct 9,
+ * 2026" or "Oct 1 to Oct 9, 2026", from an answer (its range, from and to) or from a request
+ * not yet answered (an all-time request has no `from` yet: "All time"). `sentence` gives the
+ * form that goes mid-sentence: "the last 30 days", "all time, since ...".
+ */
+export function rangeLabel(stats, { sentence = false } = {}) {
+  const { range, from, to } = stats;
+  const lead = (upper, lower) => (sentence ? lower : upper);
+  if (range === 'all') {
+    return `${lead('A', 'a')}ll time${isDay(from) ? `, since ${formatDate(from)}` : ''}`;
+  }
+  if (RANGES.includes(range)) return `${lead('Last', 'the last')} ${range} days`;
+  if (isDay(from) && isDay(to)) return formatDayRange(from, to);
+  return lead('This range', 'this range');
+}
+
+/**
+ * What the people counts cover, when it is not the whole range: they come from raw rows kept
+ * USERS_WINDOW_DAYS days, so a longer range counts people over its newest days only, and a range
+ * wholly older than that has none ('' when they cover it all).
+ */
+export function peopleNote(stats) {
+  const covered = stats.usersWindowDays;
+  if (covered === null) return '';
+  if (covered === 0) {
+    return `People counts need a range within the last ${USERS_WINDOW_DAYS} days.`;
+  }
+  if (stats.days === null) return `People are counted over the last ${covered} days.`;
+  if (covered < stats.days) return `People counts cover the last ${covered} days of the range.`;
+  return '';
+}
+
+/**
+ * Whether the range ends today (UTC, the day the answer was made), so "Active today" and "in
+ * the last 7 days" are true as written; a range that ended earlier names its last day instead.
+ */
+export function endsToday(stats) {
+  const today = str(stats.generatedAt).slice(0, 10);
+  return !isDay(stats.to) || !isDay(today) || stats.to >= today;
+}
+
+/** A total time: formatDuration up to 100 hours, then whole hours ("1,234 h", "12.9K h"). */
+export function formatTotalTime(seconds) {
+  const s = Math.max(0, Math.round(num(seconds)));
+  if (s < 100 * 3600) return formatDuration(s);
+  return `${formatCompact(Math.round(s / 3600))} h`;
+}
+
+/** An ISO time as "Oct 9, 2026, 18:30 UTC". */
 export function formatGeneratedAt(iso) {
   const time = Date.parse(str(iso));
   return Number.isFinite(time) ? `${DATE_TIME.format(new Date(time))} UTC` : '';
